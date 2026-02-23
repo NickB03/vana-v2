@@ -1,0 +1,69 @@
+# Docker Compose configuration for the morphic-stack development environment
+
+name: morphic-stack
+services:
+  morphic:
+    image: ghcr.io/${GITHUB_REPOSITORY:-your-username/morphic}:latest
+    command: bun start -H 0.0.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+      cache_from:
+        - morphic:builder
+        - morphic:latest
+    env_file: .env.local # Load environment variables
+    environment:
+      # Database connection for Docker Compose
+      DATABASE_URL: postgresql://${POSTGRES_USER:-morphic}:${POSTGRES_PASSWORD:-morphic}@postgres:5432/${POSTGRES_DB:-morphic}
+      DATABASE_SSL_DISABLED: 'true' # Disable SSL for local Docker PostgreSQL
+      # Authentication settings (default: disabled for personal Docker use)
+      ENABLE_AUTH: ${ENABLE_AUTH:-false}
+      ANONYMOUS_USER_ID: ${ANONYMOUS_USER_ID:-docker-anonymous}
+    ports:
+      - '3000:3000' # Maps port 3000 on the host to port 3000 in the container.
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      searxng:
+        condition: service_started
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-morphic}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-morphic}
+      POSTGRES_DB: ${POSTGRES_DB:-morphic}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-morphic}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  searxng:
+    image: searxng/searxng
+    ports:
+      - '${SEARXNG_PORT:-8080}:8080'
+    env_file: .env.local # can remove if you want to use env variables or in settings.yml
+    volumes:
+      - ./searxng-limiter.toml:/etc/searxng/limiter.toml
+      - ./searxng-settings.yml:/etc/searxng/settings.yml
+      - searxng_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
+  searxng_data:
