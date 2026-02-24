@@ -21,12 +21,13 @@ const fontSans = FontSans({
   variable: '--font-sans'
 })
 
-const title = 'Morphic'
+const title = 'Vana'
 const description =
-  'A fully open-source AI-powered answer engine with a generative UI.'
+  'An AI-powered answer engine with a generative UI for research and exploration.'
+const metadataBase = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:43100'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://morphic.sh'),
+  metadataBase: new URL(metadataBase),
   title,
   description,
   openGraph: {
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     title,
     description,
     card: 'summary_large_image',
-    creator: '@miiura'
+    creator: '@vana'
   }
 }
 

@@ -4,7 +4,7 @@ import { config } from 'dotenv'
 
 config({ path: '.env.local' })
 
-const API_URL = process.env.API_URL || 'http://localhost:3001/api/chat'
+const API_URL = process.env.API_URL || 'http://localhost:43100/api/chat'
 const COOKIES = process.env.MORPHIC_COOKIES
 
 async function measureRequest(

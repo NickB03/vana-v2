@@ -1,12 +1,12 @@
 {
-  "name": "morphic",
+  "name": "vana-v2",
   "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 43100",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 43100",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
@@ -22,7 +22,6 @@
     "@ai-sdk/google": "^3.0.18",
     "@ai-sdk/openai": "^3.0.23",
     "@ai-sdk/react": "^3.0.66",
-    "@aws-sdk/client-s3": "^3.850.0",
     "@opentelemetry/api-logs": "0.57.2",
     "@opentelemetry/instrumentation": "0.57.2",
     "@opentelemetry/sdk-logs": "0.57.2",

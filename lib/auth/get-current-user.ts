@@ -18,13 +18,16 @@ export async function getCurrentUser() {
 export async function getCurrentUserId() {
   const count = incrementAuthCallCount()
   perfLog(`getCurrentUserId called - count: ${count}`)
+  const isCloudDeployment =
+    process.env.VANA_CLOUD_DEPLOYMENT === 'true' ||
+    process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true'
 
   // Skip authentication mode (for personal Docker deployments)
   if (process.env.ENABLE_AUTH === 'false') {
-    // Guard: Prevent disabling auth in Morphic Cloud deployments
-    if (process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true') {
+    // Guard: Prevent disabling auth in cloud deployments
+    if (isCloudDeployment) {
       throw new Error(
-        'ENABLE_AUTH=false is not allowed in MORPHIC_CLOUD_DEPLOYMENT'
+        'ENABLE_AUTH=false is not allowed in cloud deployment mode'
       )
     }
 

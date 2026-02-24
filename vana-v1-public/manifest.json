@@ -1,0 +1,23 @@
+{
+  "name": "Vana",
+  "short_name": "Vana",
+  "description": "AI-Powered Chat Assistant for content creation, image generation, and code generation",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#8B7BF7",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/vana-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/vana-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

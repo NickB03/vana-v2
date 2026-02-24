@@ -21,7 +21,7 @@ A command-line interface for testing the chat API without a browser client. This
 
 1. **Add authentication to `.env.local`**:
    ```env
-   MORPHIC_COOKIES="your-cookie-string-here"
+   VANA_COOKIES="your-cookie-string-here"
    ```
 
 ### Usage
@@ -55,7 +55,7 @@ bun chat --help
 ### Options
 
 - `-m, --message <text>` - Message to send (default: "Hello, how are you?")
-- `-u, --url <url>` - API URL (default: http://localhost:3000/api/chat, localhost only)
+- `-u, --url <url>` - API URL (default: http://localhost:43100/api/chat, localhost only)
 - `-c, --chat-id <id>` - Chat ID for session continuity (default: auto-generated)
 - `-s, --search` - Enable search mode with adaptive strategy (default)
 - `--no-search` - Disable search mode
@@ -124,9 +124,9 @@ bun chat -c "chat_123" -t regenerate --message-id "msg_456" -m "Tell me about ma
 
 If you encounter "User not authenticated" errors:
 
-1. Ensure you're logged into Morphic in your browser
+1. Ensure you're logged into Vana in your browser
 2. Get fresh cookies from DevTools
-3. Update `MORPHIC_COOKIES` in `.env.local`
+3. Update `VANA_COOKIES` in `.env.local` (or `MORPHIC_COOKIES` for legacy fallback)
 4. Cookies expire after ~1 hour, so refresh them if needed
 
 #### API Errors
@@ -140,9 +140,9 @@ If you encounter "Selected provider is not enabled" errors:
 #### General Issues
 
 - Check the development server is running: `bun dev`
-- Verify `.env.local` exists and contains `MORPHIC_COOKIES`
+- Verify `.env.local` exists and contains `VANA_COOKIES` (or legacy `MORPHIC_COOKIES`)
 - Use `DEBUG=1` prefix for verbose output
-- Ensure the API URL is accessible (default: `http://localhost:3000/api/chat`)
+- Ensure the API URL is accessible (default: `http://localhost:43100/api/chat`)
 
 #### Command Examples for Testing
 

@@ -169,7 +169,7 @@ export const parts = pgTable(
     tool_state: varchar('tool_state', { length: VARCHAR_LENGTH }),
     tool_errorText: text('tool_error_text'),
 
-    // Tool-specific columns (all Morphic tools)
+    // Tool-specific columns (all Vana tools)
     tool_search_input: json('tool_search_input').$type<any>(),
     tool_search_output: json('tool_search_output').$type<any>(),
     tool_fetch_input: json('tool_fetch_input').$type<any>(),

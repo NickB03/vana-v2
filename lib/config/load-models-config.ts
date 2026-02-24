@@ -60,8 +60,10 @@ function validateModelsConfigStructure(
 }
 
 export async function loadModelsConfig(): Promise<ModelsConfig> {
-  const profile =
-    process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true' ? 'cloud' : 'default'
+  const isCloudDeployment =
+    process.env.VANA_CLOUD_DEPLOYMENT === 'true' ||
+    process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true'
+  const profile = isCloudDeployment ? 'cloud' : 'default'
 
   if (cachedConfig && cachedProfile === profile) {
     return cachedConfig
@@ -77,8 +79,10 @@ export async function loadModelsConfig(): Promise<ModelsConfig> {
 
 // Synchronous load (for code paths that need sync access)
 export function loadModelsConfigSync(): ModelsConfig {
-  const profile =
-    process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true' ? 'cloud' : 'default'
+  const isCloudDeployment =
+    process.env.VANA_CLOUD_DEPLOYMENT === 'true' ||
+    process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true'
+  const profile = isCloudDeployment ? 'cloud' : 'default'
 
   if (cachedConfig && cachedProfile === profile) {
     return cachedConfig

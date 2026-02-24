@@ -1,105 +1,69 @@
 # Docker Guide
 
-This guide covers running Morphic with Docker, including development setup, prebuilt images, and deployment options.
+This guide covers running Vana v2 with Docker for local development and self-hosted deployments.
 
-## Quick Start with Docker Compose
+## Quick Start (Docker Compose)
 
-1. Configure environment variables:
+1. Prepare environment variables:
 
 ```bash
 cp .env.local.example .env.local
 ```
 
-Edit `.env.local` and set the required variables:
+2. Start your backend infrastructure (Supabase CLI):
 
 ```bash
-DATABASE_URL=postgresql://morphic:morphic@postgres:5432/morphic
-OPENAI_API_KEY=your_openai_key
+supabase start
+```
+
+3. Edit `.env.local` and set at least:
+
+```bash
+DATABASE_URL=postgresql://postgres:postgres@localhost:44322/postgres
+AI_GATEWAY_API_KEY=your_vercel_gateway_key
 TAVILY_API_KEY=your_tavily_key
-BRAVE_SEARCH_API_KEY=your_brave_key
 ```
 
-**Note**: Authentication is disabled by default (`ENABLE_AUTH=false` in `.env.local.example`).
-
-**Optional**: Customize PostgreSQL credentials by setting environment variables in `.env.local`:
-
-```bash
-POSTGRES_USER=morphic      # Default: morphic
-POSTGRES_PASSWORD=morphic  # Default: morphic
-POSTGRES_DB=morphic        # Default: morphic
-POSTGRES_PORT=5432         # Default: 5432
-```
-
-2. Start the Docker containers:
+4. Start services:
 
 ```bash
 docker compose up -d
 ```
 
-The application will:
+5. Open the app at `http://localhost:43100`.
 
-- Start PostgreSQL 17 with health checks
-- Start Redis for SearXNG search caching
-- Wait for the database to be ready
-- Run database migrations automatically
-- Start the Morphic application
-- Start SearXNG (optional search provider)
+### What starts in Docker Compose
 
-3. Visit http://localhost:3000 in your browser.
+- `vana` app container
+- Redis (used for caching and rate limiting)
 
-**Note**: Database data is persisted in a Docker volume. To reset the database, run:
+**Note:** PostgreSQL, Authentication, and Storage are managed by the Supabase CLI (or Supabase Cloud in production).
 
-```bash
-docker compose down -v  # This will delete all data
-```
+## Authentication posture in Docker
 
-## Using Prebuilt Image
-
-Prebuilt Docker images are automatically built and published to GitHub Container Registry:
+By default, the app runs with:
 
 ```bash
-docker pull ghcr.io/miurla/morphic:latest
+ENABLE_AUTH=true
 ```
 
-You can use it with docker-compose by setting the image in your `docker-compose.yaml`:
+Ensure you have configured your Supabase project URL and keys in `.env.local`.
 
-```yaml
-services:
-  morphic:
-    image: ghcr.io/miurla/morphic:latest
-    env_file: .env.local
-    environment:
-      DATABASE_URL: postgresql://morphic:morphic@postgres:5432/morphic
-      DATABASE_SSL_DISABLED: 'true'
-      ENABLE_AUTH: 'false'
-    ports:
-      - '3000:3000'
-    depends_on:
-      - postgres
-      - redis
-```
-
-**Note**: The prebuilt image runs in **anonymous mode only** (`ENABLE_AUTH=false`). Supabase authentication cannot be enabled because `NEXT_PUBLIC_*` environment variables are embedded at build time by Next.js. To enable authentication or customize model configurations, you need to build from source — see [CONFIGURATION.md](./CONFIGURATION.md) for details.
-
-## Building from Source
-
-Use Docker Compose for a complete setup with PostgreSQL, Redis, and SearXNG. See the [Quick Start](#quick-start-with-docker-compose) section above.
-
-## Useful Commands
+## Useful commands
 
 ```bash
-# Start all containers in background
+# Start in background
 docker compose up -d
 
-# Stop all containers
+# Stop services
 docker compose down
 
-# Stop all containers and remove volumes (deletes database data)
+# Stop and remove volumes
 docker compose down -v
 
-# View logs
-docker compose logs -f morphic
+# Follow app logs
+docker compose logs -f vana
 
-# Rebuild the image
-docker compose build morphic
+# Rebuild app image
+docker compose build vana
 ```

@@ -4,62 +4,38 @@
     "byMode": {
       "quick": {
         "speed": {
-          "id": "gpt-5-mini",
-          "name": "GPT-5 mini",
-          "provider": "OpenAI",
-          "providerId": "openai",
-          "providerOptions": {
-            "openai": {
-              "reasoningEffort": "low",
-              "reasoningSummary": "auto"
-            }
-          }
+          "id": "google/gemini-3-flash",
+          "name": "Gemini 3 Flash",
+          "provider": "Google",
+          "providerId": "gateway"
         },
         "quality": {
-          "id": "gpt-5.2",
-          "name": "GPT-5.2",
-          "provider": "OpenAI",
-          "providerId": "openai",
-          "providerOptions": {
-            "openai": {
-              "reasoningEffort": "low",
-              "reasoningSummary": "auto"
-            }
-          }
+          "id": "xai/grok-4-fast-reasoning",
+          "name": "Grok 4 Fast Reasoning",
+          "provider": "xAI",
+          "providerId": "gateway"
         }
       },
       "adaptive": {
         "speed": {
-          "id": "gpt-5-mini",
-          "name": "GPT-5 mini",
-          "provider": "OpenAI",
-          "providerId": "openai",
-          "providerOptions": {
-            "openai": {
-              "reasoningEffort": "medium",
-              "reasoningSummary": "auto"
-            }
-          }
+          "id": "google/gemini-3-flash",
+          "name": "Gemini 3 Flash",
+          "provider": "Google",
+          "providerId": "gateway"
         },
         "quality": {
-          "id": "gpt-5.2",
-          "name": "GPT-5.2",
-          "provider": "OpenAI",
-          "providerId": "openai",
-          "providerOptions": {
-            "openai": {
-              "reasoningEffort": "medium",
-              "reasoningSummary": "auto"
-            }
-          }
+          "id": "xai/grok-4-fast-reasoning",
+          "name": "Grok 4 Fast Reasoning",
+          "provider": "xAI",
+          "providerId": "gateway"
         }
       }
     },
     "relatedQuestions": {
-      "id": "gpt-4.1",
+      "id": "openai/gpt-4.1",
       "name": "GPT-4.1",
       "provider": "OpenAI",
-      "providerId": "openai"
+      "providerId": "gateway"
     }
   }
 }

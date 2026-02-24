@@ -5,7 +5,7 @@ import type { ChatEventData } from './types'
 /**
  * Track a chat event to analytics provider
  *
- * Currently uses Vercel Analytics. Only sends events when MORPHIC_CLOUD_DEPLOYMENT=true.
+ * Currently uses Vercel Analytics. Only sends events when VANA_CLOUD_DEPLOYMENT=true (or MORPHIC_CLOUD_DEPLOYMENT=true for backward compatibility).
  * Errors are logged but do not interrupt the application flow.
  *
  * Future extensibility: This function can be modified to support multiple providers
@@ -29,8 +29,12 @@ import type { ChatEventData } from './types'
  * ```
  */
 export async function trackChatEvent(data: ChatEventData): Promise<void> {
+  const isCloudDeployment =
+    process.env.VANA_CLOUD_DEPLOYMENT === 'true' ||
+    process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true'
+
   // Only track events in cloud deployment environment
-  if (process.env.MORPHIC_CLOUD_DEPLOYMENT !== 'true') {
+  if (!isCloudDeployment) {
     return
   }
 

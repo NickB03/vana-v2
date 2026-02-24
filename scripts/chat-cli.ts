@@ -85,7 +85,7 @@ class ChatApiTester {
   constructor(config: Partial<ChatApiConfig> = {}) {
     this.config = {
       apiUrl:
-        this.validateUrl(config.apiUrl) || 'http://localhost:3000/api/chat',
+        this.validateUrl(config.apiUrl) || 'http://localhost:43100/api/chat',
       message: config.message || DEFAULT_MESSAGE,
       chatId: config.chatId || this.generateId(),
       modelType: config.modelType || 'speed',
@@ -118,8 +118,15 @@ class ChatApiTester {
   }
 
   private loadCookiesFromEnv(): string | undefined {
+    if (process.env.VANA_COOKIES) {
+      console.log('🍪 Using cookies from VANA_COOKIES environment variable')
+      return process.env.VANA_COOKIES
+    }
+
     if (process.env.MORPHIC_COOKIES) {
-      console.log('🍪 Using cookies from MORPHIC_COOKIES environment variable')
+      console.log(
+        '🍪 Using cookies from MORPHIC_COOKIES environment variable (legacy)'
+      )
       return process.env.MORPHIC_COOKIES
     }
     return undefined
@@ -373,7 +380,7 @@ Usage: bun scripts/chat-cli.ts [options]
 
 Options:
   -m, --message <text>    Message to send (default: "Hello, how are you?")
-  -u, --url <url>         API URL (default: http://localhost:3000/api/chat)
+  -u, --url <url>         API URL (default: http://localhost:43100/api/chat)
   -c, --chat-id <id>      Chat ID (default: auto-generated)
   -s, --search            Enable search mode with adaptive strategy (default)
   --no-search             Disable search mode
@@ -406,15 +413,16 @@ Note: Without authentication, you may get "User not authenticated" errors.
 
 Authentication:
 
-1. Add to .env.local: MORPHIC_COOKIES="your-cookie-string"
-2. The script will automatically load cookies when it runs
+1. Add to .env.local: VANA_COOKIES="your-cookie-string"
+2. MORPHIC_COOKIES is also supported as a legacy fallback
+3. The script will automatically load cookies when it runs
 
 To get cookies:
 1. Open DevTools > Network tab
-2. Make any request in Morphic
+2. Make any request in Vana
 3. Click on the request > Headers > Request Headers > Cookie
 4. Copy the entire Cookie value
-5. Add to .env.local as MORPHIC_COOKIES="copied-value"
+5. Add to .env.local as VANA_COOKIES="copied-value"
 `)
         process.exit(0)
     }

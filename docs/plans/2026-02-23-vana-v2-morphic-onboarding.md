@@ -59,84 +59,84 @@ Execute **Approach B** in phases below. It provides a working app quickly while 
 
 ## Phase Plan
 
-### Phase 0: Decision Lock + Scope Baseline (0.5 day)
+### Phase 0: Decision Lock + Scope Baseline (0.5 day) — **[DONE]**
 
 **Deliverables**
 
-- Written decisions for:
-  - Auth mode at launch (`ENABLE_AUTH=false` vs Supabase)
-  - Search backend priority (Tavily/Brave vs SearXNG)
-  - Deployment target (Vercel vs Docker-first)
+- [x] Written decisions for:
+  - Auth mode at launch (`ENABLE_AUTH=true` with Supabase)
+  - Search backend priority (Tavily/Brave)
+  - Deployment target (Vercel)
   - Must-keep features vs remove-now features
 
 **Validation checkpoint**
 
-- One-page decision note approved before code import.
+- [x] One-page decision note approved before code import (see `docs/DECISIONS.md`).
 
 ---
 
-### Phase 1: Bootstrap `vana-v2` from Morphic (0.5 day)
+### Phase 1: Bootstrap `vana-v2` from Morphic (0.5 day) — **[DONE]**
 
 **Files/areas**
 
-- Entire codebase import into current repository root
-- Preserve: `LICENSE`, attribution, upstream NOTICE references
+- [x] Entire codebase import into current repository root
+- [x] Preserve: `LICENSE`, attribution, upstream NOTICE references
 
 **Execution steps**
 
-1. Initialize git repo in `vana-v2` (if not initialized).
-2. Import Morphic source snapshot (or add upstream remote + pull).
-3. Commit as `chore: bootstrap vana-v2 from morphic upstream`.
+1. [x] Initialize git repo in `vana-v2` (if not initialized).
+2. [x] Import Morphic source snapshot.
+3. [x] Commit as `chore: bootstrap vana-v2 from morphic upstream`.
 
 **Validation checkpoint**
 
-- `git status` clean, project files present, history starts with bootstrap commit.
+- [x] `git status` clean, project files present, history starts with bootstrap commit.
 
 ---
 
-### Phase 2: Environment + Secret Policy (0.5 day)
+### Phase 2: Environment + Secret Policy (0.5 day) — **[IN PROGRESS]**
 
 **Files**
 
-- `.env.local.example`
-- `docs/CONFIGURATION.md`
-- New: `docs/ENVIRONMENT.md` (Vana-specific secret matrix)
+- [x] `.env.local.example`
+- [x] `docs/CONFIGURATION.md`
+- [x] `docs/ENVIRONMENT.md` (Vana-specific secret matrix)
 
 **Execution steps**
 
-1. Rename project-facing environment labels from Morphic -> Vana where needed.
-2. Keep minimal required vars for day-1 boot:
-   - `DATABASE_URL`
-   - one AI provider key
-   - one search provider key
-3. Split vars into required/optional in docs.
+1. [x] Rename project-facing environment labels from Morphic -> Vana where needed.
+2. [ ] Populate and finalize `.env.local` with real keys:
+   - `DATABASE_URL` (Supabase local or cloud)
+   - `AI_GATEWAY_API_KEY`
+   - `TAVILY_API_KEY`
+3. [x] Split vars into required/optional in docs.
 
 **Validation checkpoint**
 
-- A new engineer can configure `.env.local` in under 10 minutes using docs only.
+- [ ] A new engineer can configure `.env.local` in under 10 minutes using docs only.
 
 ---
 
-### Phase 3: First Green Run (Local) (0.5 day)
+### Phase 3: First Green Run (Local) (0.5 day) — **[IN PROGRESS]**
 
 **Files/areas**
 
-- `package.json` scripts
-- `drizzle/*`
-- `docker-compose.yaml` (if Docker path selected)
+- [x] `package.json` scripts
+- [x] `drizzle/*`
+- [ ] `docker-compose.yaml` (for local Supabase/Redis)
 
 **Execution steps**
 
-1. Install deps (`bun install`).
-2. Run migrations (`bun run migrate`).
-3. Run app (`bun dev`) and smoke test:
+1. [x] Install deps (`bun install`).
+2. [ ] Setup database and run migrations (`bun run migrate`).
+3. [ ] Run app (`bun dev`) and smoke test:
    - app loads
    - one prompt completes
    - citations/search return results
 
 **Validation checkpoint**
 
-- Local smoke test checklist passed and recorded.
+- [ ] Local smoke test checklist passed and recorded.
 
 ---
 
