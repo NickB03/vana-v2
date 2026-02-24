@@ -167,7 +167,7 @@ export function createSearchTool(fullModel: string) {
 }
 
 // Default export for backward compatibility, using a default model
-export const searchTool = createSearchTool('openai:gpt-4o-mini')
+export const searchTool = createSearchTool('gateway:google/gemini-3-flash')
 
 // Export type for UI tool invocation
 export type SearchUIToolInvocation = UIToolInvocation<typeof searchTool>

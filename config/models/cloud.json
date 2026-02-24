@@ -10,8 +10,8 @@
           "providerId": "gateway"
         },
         "quality": {
-          "id": "xai/grok-4-fast-reasoning",
-          "name": "Grok 4 Fast Reasoning",
+          "id": "xai/grok-4.1-fast-reasoning",
+          "name": "Grok 4.1 Fast Reasoning",
           "provider": "xAI",
           "providerId": "gateway"
         }
@@ -24,16 +24,16 @@
           "providerId": "gateway"
         },
         "quality": {
-          "id": "xai/grok-4-fast-reasoning",
-          "name": "Grok 4 Fast Reasoning",
+          "id": "xai/grok-4.1-fast-reasoning",
+          "name": "Grok 4.1 Fast Reasoning",
           "provider": "xAI",
           "providerId": "gateway"
         }
       }
     },
     "relatedQuestions": {
-      "id": "google/gemini-2.5-flash-lite",
-      "name": "Gemini 2.5 Flash Lite",
+      "id": "google/gemini-3-flash",
+      "name": "Gemini 3 Flash",
       "provider": "Google",
       "providerId": "gateway"
     }

@@ -12,7 +12,7 @@ Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphi
 - **Storage:** Supabase Storage
 - **Caching/Rate Limiting:** Upstash Redis
 - **Search:** Tavily (Primary), Brave (Multimedia)
-- **AI Providers:** Anthropic, Google (Gemini), OpenAI, Grok, Ollama (local)
+- **AI Providers:** Google (Gemini 3 Flash), xAI (Grok 4.1 Fast Reasoning) via Vercel AI Gateway
 
 ## Architectural Patterns
 - **Agents:** Located in `lib/agents/`. The `researcher.ts` uses `ToolLoopAgent` to orchestrate multi-step tool calls. It supports "Quick" and "Adaptive" modes.

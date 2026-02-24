@@ -31,7 +31,7 @@ Rationale:
 ## 3) AI Model Orchestration
 
 - **Primary Interface**: Vercel AI Gateway (`AI_GATEWAY_API_KEY`)
-- **Default Models**: Gemini 3 Flash (Speed), Grok 4 Fast Reasoning (Quality)
+- **Default Models**: Gemini 3 Flash (Speed), Grok 4.1 Fast Reasoning (Quality)
 
 Rationale:
 
