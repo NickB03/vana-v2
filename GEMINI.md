@@ -1,9 +1,11 @@
 # GEMINI.md - Vana v2 Project Context
 
 ## Project Overview
+
 Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphic architecture. It provides a sophisticated chat interface that can perform multi-step research, execute tools, and generate comprehensive answers with citations.
 
 ### Core Technologies
+
 - **Framework:** Next.js 16 (App Router), React 19, TypeScript
 - **Runtime:** Bun
 - **AI Orchestration:** Vercel AI SDK (specifically `ToolLoopAgent`)
@@ -15,6 +17,7 @@ Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphi
 - **AI Providers:** Google (Gemini 3 Flash), xAI (Grok 4.1 Fast Reasoning) via Vercel AI Gateway
 
 ## Architectural Patterns
+
 - **Agents:** Located in `lib/agents/`. The `researcher.ts` uses `ToolLoopAgent` to orchestrate multi-step tool calls. It supports "Quick" and "Adaptive" modes.
 - **Tools:** Located in `lib/tools/`. Core tools include `search`, `fetch`, `askQuestion`, and `todo`.
 - **Database Schema:** Defined in `drizzle/schema.ts`.
@@ -24,6 +27,7 @@ Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphi
 - **Generative UI:** Components in `components/` handle various message part types (e.g., `search-section.tsx`, `reasoning-section.tsx`, `answer-section.tsx`).
 
 ## Building and Running
+
 - **Install Dependencies:** `bun install`
 - **Development Server:** `bun dev` (runs on http://localhost:43100)
 - **Local Database (Supabase):** `npx supabase start` (DB: 44322, API: 44321, Studio: 44323)
@@ -33,6 +37,7 @@ Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphi
 - **Testing:** `bun run test` (Vitest)
 
 ## Development Conventions
+
 - **Tool Creation:** New tools should be added to `lib/tools/` and integrated into `lib/agents/researcher.ts`.
 - **Database Changes:** Modify `drizzle/schema.ts` and run appropriate migration scripts (managed via Drizzle Kit).
 - **Environment Variables:** Managed in `.env.local`. See `.env.local.example` for required keys.
@@ -40,6 +45,7 @@ Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphi
 - **Type Safety:** Strict TypeScript usage is encouraged. Run `bun typecheck`.
 
 ## Key Files
+
 - `app/api/chat/route.ts`: Main entry point for AI chat interactions.
 - `lib/agents/researcher.ts`: Core research logic using `ToolLoopAgent`.
 - `lib/tools/search.ts`: Integration with Tavily and Brave.

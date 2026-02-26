@@ -9,12 +9,14 @@ export async function uploadFileToSupabase(
   chatId: string
 ) {
   const supabase = await createClient()
-  const sanitizedFileName = file.name.replace(/[^a-z0-9.\-_]/gi, '_').toLowerCase()
+  const sanitizedFileName = file.name
+    .replace(/[^a-z0-9.\-_]/gi, '_')
+    .toLowerCase()
   const filePath = `${userId}/chats/${chatId}/${Date.now()}-${sanitizedFileName}`
 
   try {
     const buffer = await file.arrayBuffer()
-    
+
     const { data, error } = await supabase.storage
       .from(SUPABASE_STORAGE_BUCKET)
       .upload(filePath, buffer, {
@@ -26,9 +28,9 @@ export async function uploadFileToSupabase(
       throw error
     }
 
-    const { data: { publicUrl } } = supabase.storage
-      .from(SUPABASE_STORAGE_BUCKET)
-      .getPublicUrl(filePath)
+    const {
+      data: { publicUrl }
+    } = supabase.storage.from(SUPABASE_STORAGE_BUCKET).getPublicUrl(filePath)
 
     return {
       filename: file.name,

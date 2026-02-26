@@ -15,4 +15,6 @@ export function createQuestionTool(fullModel: string) {
 }
 
 // Default export for backward compatibility, using a default model
-export const askQuestionTool = createQuestionTool('gateway:google/gemini-3-flash')
+export const askQuestionTool = createQuestionTool(
+  'gateway:google/gemini-3-flash'
+)

@@ -4,18 +4,18 @@ This document defines the environment-variable matrix for Vana v2.
 
 ## Required (Day-1 bootstrap)
 
-| Variable              | Required | Purpose                                           |
-| --------------------- | -------- | ------------------------------------------------- |
-| `DATABASE_URL`        | Yes      | PostgreSQL connection string for Drizzle/Supabase |
-| `AI_GATEWAY_API_KEY`  | Yes      | Vercel AI Gateway provider key                    |
-| `TAVILY_API_KEY`      | Yes      | Primary search provider key                       |
+| Variable             | Required | Purpose                                           |
+| -------------------- | -------- | ------------------------------------------------- |
+| `DATABASE_URL`       | Yes      | PostgreSQL connection string for Drizzle/Supabase |
+| `AI_GATEWAY_API_KEY` | Yes      | Vercel AI Gateway provider key                    |
+| `TAVILY_API_KEY`     | Yes      | Primary search provider key                       |
 
 ## Core behavior controls
 
-| Variable              | Default                          | Purpose                                    |
-| --------------------- | -------------------------------- | ------------------------------------------ |
-| `ENABLE_AUTH`         | `true`                           | Toggle auth required mode                  |
-| `ANONYMOUS_USER_ID`   | `anonymous-user`                 | Shared local user id when auth is disabled |
+| Variable              | Default                           | Purpose                                    |
+| --------------------- | --------------------------------- | ------------------------------------------ |
+| `ENABLE_AUTH`         | `true`                            | Toggle auth required mode                  |
+| `ANONYMOUS_USER_ID`   | `anonymous-user`                  | Shared local user id when auth is disabled |
 | `NEXT_PUBLIC_APP_URL` | `http://localhost:43100` fallback | Metadata base URL and canonical links      |
 
 ## Cloud deployment controls
@@ -73,8 +73,10 @@ Required when `ENABLE_AUTH=true`:
 ## Implementation Details
 
 ### Guest Chat (`ENABLE_GUEST_CHAT`)
+
 - If `ENABLE_AUTH=true` and `ENABLE_GUEST_CHAT` is not `true`, the API will return `401 Unauthorized` for non-logged-in users.
 - Guest sessions are ephemeral and do not persist in the database.
 
 ### Cloud Mode (`VANA_CLOUD_DEPLOYMENT`)
+
 - Enabling this mode locally requires `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to be configured, or the app will fail to initialize rate limiting and search caching.

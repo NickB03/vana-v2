@@ -84,7 +84,9 @@ function mergeTodos(
       })
     } else {
       // New todo not in existing list
-      newTodos.push(normalizeTodo(incoming_todo, existing.length + newTodos.length))
+      newTodos.push(
+        normalizeTodo(incoming_todo, existing.length + newTodos.length)
+      )
     }
   }
 

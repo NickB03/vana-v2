@@ -45,7 +45,9 @@ export function LoginForm({
         email,
         password
       })
-      console.log('[login] signInWithPassword result:', { error: error?.message })
+      console.log('[login] signInWithPassword result:', {
+        error: error?.message
+      })
       if (error) throw error
       // Redirect to root and refresh to ensure server components get updated session
       console.log('[login] success, redirecting...')

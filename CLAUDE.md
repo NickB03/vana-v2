@@ -37,6 +37,7 @@ The core flow is: `app/api/chat/route.ts` → `lib/agents/researcher.ts` → too
 ### Database (Drizzle + Supabase PostgreSQL)
 
 Schema in `lib/db/schema.ts` with three core tables:
+
 - **chats** → **messages** → **parts** (cascade delete)
 - `parts` is a wide table storing all message part types (text, reasoning, files, sources, tool calls) with check constraints per type
 - All tables use Row-Level Security (RLS) via `current_setting('app.current_user_id')` — users see only their own data, public chats are readable by all
@@ -51,6 +52,7 @@ Schema in `lib/db/schema.ts` with three core tables:
 ### Auth
 
 Supabase Auth with three client patterns:
+
 - `lib/supabase/client.ts` — browser client
 - `lib/supabase/server.ts` — server-side client (cookies-based)
 - `lib/supabase/middleware.ts` — session refresh in middleware
@@ -69,6 +71,7 @@ No semicolons, single quotes, no trailing commas, 2-space indent, avoid arrow pa
 ### Import Order (ESLint enforced)
 
 Strict import sorting via `simple-import-sort`:
+
 1. `react`, `next`
 2. Third-party (`@?\\w`)
 3. Internal in order: `@/types` → `@/config` → `@/lib` → `@/hooks` → `@/components/ui` → `@/components` → `@/registry` → `@/styles` → `@/app`
@@ -81,6 +84,7 @@ Strict import sorting via `simple-import-sort`:
 ## Environment
 
 See `docs/ENVIRONMENT.md` for full reference. Key variables:
+
 - `DATABASE_URL` — PostgreSQL connection
 - `AI_GATEWAY_API_KEY` — Vercel AI Gateway (primary model provider)
 - `TAVILY_API_KEY` — search
