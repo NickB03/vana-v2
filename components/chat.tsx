@@ -227,6 +227,14 @@ export function Chat({
     return result
   }, [messages])
 
+  // Listen for sidebar "New" / logo click to reset chat state
+  useEffect(() => {
+    const onNewChatRequested = () => handleNewChat()
+    window.addEventListener('new-chat-requested', onNewChatRequested)
+    return () =>
+      window.removeEventListener('new-chat-requested', onNewChatRequested)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   // Dispatch custom event when messages change
   useEffect(() => {
     window.dispatchEvent(

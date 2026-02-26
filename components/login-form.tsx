@@ -33,20 +33,26 @@ export function LoginForm({
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const supabase = createClient()
+    console.log('[login] handleLogin called')
     setIsLoading(true)
     setError(null)
 
     try {
+      console.log('[login] creating supabase client...')
+      const supabase = createClient()
+      console.log('[login] calling signInWithPassword...')
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password
       })
+      console.log('[login] signInWithPassword result:', { error: error?.message })
       if (error) throw error
       // Redirect to root and refresh to ensure server components get updated session
+      console.log('[login] success, redirecting...')
       router.push('/')
       router.refresh()
     } catch (error: unknown) {
+      console.error('[login] caught error:', error)
       setError(error instanceof Error ? error.message : 'An error occurred')
     } finally {
       setIsLoading(false)
@@ -54,11 +60,11 @@ export function LoginForm({
   }
 
   const handleSocialLogin = async () => {
-    const supabase = createClient()
     setIsLoading(true)
     setError(null)
 
     try {
+      const supabase = createClient()
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -116,6 +122,7 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="you@example.com"
+                  autoComplete="email"
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -135,6 +142,7 @@ export function LoginForm({
                   id="password"
                   type="password"
                   placeholder="********"
+                  autoComplete="current-password"
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}

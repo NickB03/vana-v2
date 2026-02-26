@@ -36,9 +36,18 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  let user = null
+  try {
+    const result = await Promise.race([
+      supabase.auth.getUser(),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('getUser timeout')), 5000)
+      )
+    ])
+    user = result.data.user
+  } catch (e) {
+    console.error('[proxy] getUser failed:', e)
+  }
 
   // Define public paths that don't require authentication
   const publicPaths = [

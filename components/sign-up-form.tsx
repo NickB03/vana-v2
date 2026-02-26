@@ -32,7 +32,6 @@ export function SignUpForm({
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
-    const supabase = createClient()
     setIsLoading(true)
     setError(null)
 
@@ -43,15 +42,20 @@ export function SignUpForm({
     }
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const supabase = createClient()
+      const { data, error } = await supabase.auth.signUp({
         email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`
-        }
+        password
       })
       if (error) throw error
-      router.push('/auth/sign-up-success')
+
+      // If session exists, user is confirmed and signed in — go to home
+      // Otherwise, email confirmation is required
+      if (data.session) {
+        router.push('/')
+      } else {
+        router.push('/auth/sign-up-success')
+      }
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'An error occurred')
     } finally {
@@ -83,6 +87,7 @@ export function SignUpForm({
                   id="email"
                   type="email"
                   placeholder="you@example.com"
+                  autoComplete="email"
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -96,6 +101,7 @@ export function SignUpForm({
                   id="password"
                   type="password"
                   placeholder="********"
+                  autoComplete="new-password"
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
@@ -109,6 +115,7 @@ export function SignUpForm({
                   id="repeat-password"
                   type="password"
                   placeholder="********"
+                  autoComplete="new-password"
                   required
                   value={repeatPassword}
                   onChange={e => setRepeatPassword(e.target.value)}

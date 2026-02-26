@@ -52,7 +52,8 @@ function IconBlinkingLogo({
   const svgRef = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
-    const blinkElements = document.querySelectorAll('.blink')
+    if (!svgRef.current) return
+    const blinkElements = svgRef.current.querySelectorAll('.blink')
     const initialPositions = Array.from(blinkElements).map(el => ({
       cx: parseFloat(el.getAttribute('cx') || '0'),
       cy: parseFloat(el.getAttribute('cy') || '0')
@@ -80,15 +81,24 @@ function IconBlinkingLogo({
     const handleMove = (clientX: number, clientY: number) => {
       if (svgRef.current) {
         const rect = svgRef.current.getBoundingClientRect()
-        const mouseX = clientX - rect.left - rect.width / 2 - 256
-        const mouseY = clientY - rect.top - rect.height / 2
+        const svgCenterX = rect.left + rect.width / 2
+        const svgCenterY = rect.top + rect.height / 2
+        const mouseX = clientX - svgCenterX
+        const mouseY = clientY - svgCenterY
 
-        const maxMove = 60
+        const maxMove = 20
 
         blinkElements.forEach((el, index) => {
           const { cx, cy } = initialPositions[index]
-          const targetDx = Math.min((mouseX - cx) * 0.1, maxMove)
-          const targetDy = Math.min((mouseY - cy) * 0.1, maxMove)
+          const scale = 256 / rect.width
+          const targetDx = Math.max(
+            -maxMove,
+            Math.min(mouseX * scale * 0.08, maxMove)
+          )
+          const targetDy = Math.max(
+            -maxMove,
+            Math.min(mouseY * scale * 0.08, maxMove)
+          )
 
           let velocityX = 0
           let velocityY = 0

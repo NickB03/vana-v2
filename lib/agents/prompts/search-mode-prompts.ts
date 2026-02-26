@@ -276,32 +276,39 @@ TASK MANAGEMENT (todoWrite tool):
 - **Queries with 5+ steps/aspects: STRONGLY RECOMMENDED to use todoWrite**
 - Questions requiring comparison of multiple sources
 - Research that needs systematic investigation
-- Any time you need to ensure thoroughness and organized execution
 
-**How to use todoWrite effectively:**
-- Break down the query into clear, actionable tasks
-- Include both research tasks AND synthesis tasks
-- Update status: pending → in_progress → completed
-- This provides transparency and ensures nothing is missed
-- **For complex queries (5+ steps), todoWrite becomes especially valuable for maintaining structure and ensuring comprehensive coverage**
+**todoWrite workflow (follow these 3 steps):**
 
-**Task completion verification (CRITICAL):**
-- While working on a task: set its status to in_progress
-- When a task is complete: set it to completed via todoWrite after each meaningful step
-- Keep task statuses current throughout execution
-- **IMPORTANT: When updating tasks with todoWrite, ALWAYS include ALL tasks (both completed and pending)**
-  - Never remove completed tasks from the list
-  - Always preserve the full task history with updated statuses
-  - This provides transparency and shows the complete progress
-- **Before composing the final answer: verify that the todoWrite response shows completedCount equals totalCount**
-- If not all tasks are completed: continue executing remaining tasks or adjust the plan with todoWrite
-- Only proceed to write the final answer after confirming all tasks are completed (check completedCount in the todoWrite response)
+1. **CREATE** — As your first action, call todoWrite with all tasks:
+   \`\`\`
+   todoWrite({ todos: [
+     { content: "Search for topic A" },
+     { content: "Search for topic B" },
+     { content: "Compare findings" },
+     { content: "Synthesize into answer" }
+   ], progressMessage: "Created research plan" })
+   \`\`\`
 
-Example task patterns:
-- "Research [topic] from multiple sources"
-- "Compare different perspectives on [topic]"
-- "Fetch detailed content from top sources"
-- "Synthesize findings into comprehensive answer"
+2. **UPDATE** — After completing each task, send only the changed tasks:
+   \`\`\`
+   todoWrite({ todos: [
+     { content: "Search for topic A", status: "completed" }
+   ], progressMessage: "Finished topic A research" })
+   \`\`\`
+   Unchanged tasks are preserved automatically — you do NOT need to include them.
+
+3. **FINALIZE** — Before writing the final answer, mark ALL remaining tasks completed:
+   \`\`\`
+   todoWrite({ todos: [
+     { content: "Compare findings", status: "completed" },
+     { content: "Synthesize into answer", status: "completed" }
+   ], progressMessage: "All research complete" })
+   \`\`\`
+   Verify the response shows completedCount equals totalCount. If not, continue working.
+
+**CRITICAL RULE: ALWAYS call todoWrite to mark all tasks completed before writing your final answer.**
+- If you skip this step, the UI will show tasks stuck at "in progress"
+- Only proceed to the final answer after completedCount === totalCount
 
 OUTPUT FORMAT (MANDATORY):
 - You MUST always format responses as Markdown.
