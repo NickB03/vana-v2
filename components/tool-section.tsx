@@ -4,6 +4,7 @@ import { UseChatHelpers } from '@ai-sdk/react'
 
 import type { ToolPart, UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
 
+import { CodeSandboxSection } from './code-sandbox-section'
 import FetchSection from './fetch-section'
 import { QuestionConfirmation } from './question-confirmation'
 import { SearchSection } from './search-section'
@@ -104,6 +105,17 @@ export function ToolSection({
           output={tool.output}
           errorText={tool.errorText}
           toolCallId={tool.toolCallId}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          borderless={borderless}
+          isFirst={isFirst}
+          isLast={isLast}
+        />
+      )
+    case 'tool-runCode':
+      return (
+        <CodeSandboxSection
+          tool={tool as ToolPart<'runCode'>}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           borderless={borderless}

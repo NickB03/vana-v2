@@ -9,6 +9,7 @@ import type { ResearcherTools } from '@/lib/types/agent'
 import { type ModelType } from '@/lib/types/model-type'
 import { type Model } from '@/lib/types/models'
 
+import { codeExecutionTool } from '../tools/code'
 import { fetchTool } from '../tools/fetch'
 import { createQuestionTool } from '../tools/question'
 import { createSearchTool } from '../tools/search'
@@ -105,7 +106,7 @@ export function createResearcher({
           '[Researcher] Quick mode: maxSteps=20, tools=[search, fetch]'
         )
         systemPrompt = QUICK_MODE_PROMPT
-        activeToolsList = ['search', 'fetch']
+        activeToolsList = ['search', 'fetch', 'runCode']
         maxSteps = 20
         searchTool = wrapSearchToolForQuickMode(originalSearchTool)
         break
@@ -113,7 +114,7 @@ export function createResearcher({
       case 'adaptive':
       default:
         systemPrompt = ADAPTIVE_MODE_PROMPT
-        activeToolsList = ['search', 'fetch']
+        activeToolsList = ['search', 'fetch', 'runCode']
         // Only enable todo tools for quality model type
         if (writer && 'todoWrite' in todoTools && modelType === 'quality') {
           activeToolsList.push('todoWrite')
@@ -131,6 +132,7 @@ export function createResearcher({
       search: searchTool,
       fetch: fetchTool,
       askQuestion: askQuestionTool,
+      runCode: codeExecutionTool,
       ...todoTools
     } as ResearcherTools
 

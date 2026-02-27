@@ -6,6 +6,7 @@ import type {
   UIToolInvocation
 } from 'ai'
 
+import type { codeExecutionTool } from '../tools/code'
 import type { fetchTool } from '../tools/fetch'
 import type { createQuestionTool } from '../tools/question'
 import type { createSearchTool } from '../tools/search'
@@ -16,6 +17,7 @@ export type ResearcherTools = {
   search: ReturnType<typeof createSearchTool>
   fetch: typeof fetchTool
   askQuestion: ReturnType<typeof createQuestionTool>
+  runCode: typeof codeExecutionTool
 } & ReturnType<typeof createTodoTools>
 
 // Type alias for the researcher agent using ToolLoopAgent
@@ -37,6 +39,7 @@ export type QuestionToolInvocation = UIToolInvocation<
 export type TodoWriteToolInvocation = UIToolInvocation<
   ResearcherTools['todoWrite']
 >
+export type CodeToolInvocation = UIToolInvocation<ResearcherTools['runCode']>
 
 // Union type for all tool invocations
 export type ResearcherToolInvocation =
@@ -44,6 +47,7 @@ export type ResearcherToolInvocation =
   | FetchToolInvocation
   | QuestionToolInvocation
   | TodoWriteToolInvocation
+  | CodeToolInvocation
 
 // Helper type to extract tool names
 export type ResearcherToolName = keyof ResearcherTools

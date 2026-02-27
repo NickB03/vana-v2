@@ -18,6 +18,7 @@ export function ArtifactContent({ part }: { part: Part | null }) {
     case 'tool-search':
     case 'tool-fetch':
     case 'tool-askQuestion':
+    case 'tool-runCode':
       return <ToolInvocationContent part={part} />
     case 'tool-todoWrite':
       if (isTodoToolPart(part)) {

@@ -1,6 +1,7 @@
 import type { ReasoningPart, TextPart } from '@ai-sdk/provider-utils'
 import type { InferUITool, UIMessage as AIMessage } from 'ai'
 
+import { codeExecutionTool } from '@/lib/tools/code'
 import { fetchTool } from '@/lib/tools/fetch'
 import { askQuestionTool } from '@/lib/tools/question'
 import { searchTool } from '@/lib/tools/search'
@@ -52,6 +53,7 @@ export type UITools = {
   fetch: InferUITool<typeof fetchTool>
   askQuestion: InferUITool<typeof askQuestionTool>
   todoWrite: InferUITool<typeof todoTools.todoWrite>
+  runCode: InferUITool<typeof codeExecutionTool>
   // Dynamic tools will be added at runtime
   [key: string]: any
 }
