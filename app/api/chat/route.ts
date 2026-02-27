@@ -14,6 +14,7 @@ import { perfLog, perfTime } from '@/lib/utils/perf-logging'
 import { resetAllCounters } from '@/lib/utils/perf-tracking'
 import { isProviderEnabled } from '@/lib/utils/registry'
 
+export const dynamic = 'force-dynamic'
 export const maxDuration = 300
 
 export async function POST(req: Request) {

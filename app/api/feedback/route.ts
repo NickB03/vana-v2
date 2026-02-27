@@ -1,5 +1,7 @@
 import { Langfuse } from 'langfuse'
 
+export const dynamic = 'force-dynamic'
+
 import { updateMessageFeedback } from '@/lib/actions/feedback'
 import { createClient } from '@/lib/supabase/server'
 import { isTracingEnabled } from '@/lib/utils/telemetry'

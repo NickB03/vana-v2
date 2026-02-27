@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 import { getChatsPage } from '@/lib/actions/chat'
 import { Chat as DBChat } from '@/lib/db/schema'
 
