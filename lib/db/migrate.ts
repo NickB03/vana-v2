@@ -8,12 +8,15 @@ import 'dotenv/config'
 // Run it with: bun run lib/db/migrate.ts
 
 const runMigrations = async () => {
-  if (!process.env.DATABASE_URL) {
-    console.error('DATABASE_URL is not defined in environment variables')
+  const dbUrl = process.env.DATABASE_URL ?? process.env.POSTGRES_URL
+  if (!dbUrl) {
+    console.error(
+      'DATABASE_URL or POSTGRES_URL is not defined in environment variables'
+    )
     process.exit(1)
   }
 
-  const connectionString = process.env.DATABASE_URL
+  const connectionString = dbUrl
 
   // Respect DATABASE_SSL_DISABLED flag (used in Docker)
   // For cloud databases (Supabase, Neon, etc.), use SSL with rejectUnauthorized: false

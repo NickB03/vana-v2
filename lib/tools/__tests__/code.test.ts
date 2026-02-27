@@ -67,6 +67,45 @@ describe('codeExecutionTool', () => {
     expect(final.error).toContain('boom')
   })
 
+  it('passes through HTML without server execution', async () => {
+    const html = '<div><h1>Hello</h1></div>'
+    const result = codeExecutionTool.execute!(
+      { code: html, language: 'html' },
+      { toolCallId: 'test-html-1', messages: [] }
+    )
+
+    const chunks: any[] = []
+    for await (const chunk of result as AsyncIterable<any>) {
+      chunks.push(chunk)
+    }
+
+    expect(chunks[0].state).toBe('running')
+    const final = chunks[chunks.length - 1]
+    expect(final.state).toBe('complete')
+    expect(final.output).toBe(html)
+    expect(final.executionTime).toBe(0)
+    expect(final.error).toBeUndefined()
+  })
+
+  it('passes through HTML with script tags without executing them', async () => {
+    const html =
+      '<html><body><script>document.write("hi")</script></body></html>'
+    const result = codeExecutionTool.execute!(
+      { code: html, language: 'html' },
+      { toolCallId: 'test-html-2', messages: [] }
+    )
+
+    const chunks: any[] = []
+    for await (const chunk of result as AsyncIterable<any>) {
+      chunks.push(chunk)
+    }
+
+    const final = chunks[chunks.length - 1]
+    expect(final.state).toBe('complete')
+    expect(final.output).toBe(html)
+    expect(final.error).toBeUndefined()
+  })
+
   it('times out on infinite loops', { timeout: 10000 }, async () => {
     const result = codeExecutionTool.execute!(
       {

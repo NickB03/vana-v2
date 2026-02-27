@@ -11,6 +11,7 @@ import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 
 import { AnswerSection } from './answer-section'
 import { DynamicToolDisplay } from './dynamic-tool-display'
+import { InlineHtmlArtifact } from './inline-html-artifact'
 import ResearchProcessSection from './research-process-section'
 import { UserFileSection } from './user-file-section'
 import { UserTextSection } from './user-text-section'
@@ -154,6 +155,19 @@ export function RenderMessage({
           reload={reload}
           status={status}
           citationMaps={citationMaps}
+        />
+      )
+    } else if (
+      part.type === 'tool-runCode' &&
+      (part.input?.language === 'html' ||
+        (part.state === 'output-available' && part.output?.language === 'html'))
+    ) {
+      // HTML artifacts render inline, not inside the research process dropdown
+      flushBuffer(`seg-${index}`)
+      elements.push(
+        <InlineHtmlArtifact
+          key={`${messageId}-html-artifact-${index}`}
+          tool={part}
         />
       )
     } else if (

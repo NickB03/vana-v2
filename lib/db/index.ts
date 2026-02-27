@@ -14,7 +14,9 @@ const isTest = process.env.NODE_ENV === 'test'
 // The postgres driver is lazy — it only connects on first query — so a placeholder
 // connection string is safe here; no actual DB connection is attempted at build time.
 const hasDbUrl = !!(
-  process.env.DATABASE_URL || process.env.DATABASE_RESTRICTED_URL
+  process.env.DATABASE_URL ||
+  process.env.POSTGRES_URL ||
+  process.env.DATABASE_RESTRICTED_URL
 )
 
 if (!hasDbUrl && !isTest && isDevelopment) {
@@ -28,6 +30,7 @@ if (!hasDbUrl && !isTest && isDevelopment) {
 const connectionString =
   process.env.DATABASE_RESTRICTED_URL ?? // Prefer restricted user
   process.env.DATABASE_URL ??
+  process.env.POSTGRES_URL ??
   'postgres://placeholder:placeholder@localhost:5432/placeholder'
 
 // Log which connection is being used (for debugging)

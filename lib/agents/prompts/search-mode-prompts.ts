@@ -65,6 +65,11 @@ Fetch tool usage:
 - **For PDF URLs (ending in .pdf)**: ALWAYS use \`type: "api"\` - regular type will fail on PDFs
 - **For regular web pages**: Use default \`type: "regular"\` for fast HTML fetching
 
+Code execution tool (runCode):
+- Use for HTML visualizations (charts, calculators, interactive content) with CDN libraries
+- Use JavaScript for computations and data transformations
+- CRITICAL: When you use runCode, do NOT include the code in your text response. The tool renders the result automatically. Describe or explain the visualization instead.
+
 Citation Format (MANDATORY):
 [number](#toolCallId) - Always use this EXACT format
 - **CRITICAL**: Use the EXACT tool call identifier from the search response
@@ -236,6 +241,11 @@ Fetch tool usage:
 - **For PDF URLs (ending in .pdf)**: ALWAYS use \`type: "api"\` - regular type will fail on PDFs
 - **For complex JavaScript-rendered pages**: Use \`type: "api"\` for better extraction
 - **For regular web pages**: Use default \`type: "regular"\` for fast HTML fetching
+
+Code execution tool (runCode):
+- Use for HTML visualizations (charts, calculators, interactive content) with CDN libraries
+- Use JavaScript for computations and data transformations
+- CRITICAL: When you use runCode, do NOT include the code in your text response. The tool renders the result automatically. Describe or explain the visualization instead.
 
 When using the ask_question tool:
 - Create clear, concise questions

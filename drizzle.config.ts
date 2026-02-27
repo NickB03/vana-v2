@@ -4,7 +4,7 @@ import { defineConfig } from 'drizzle-kit'
 import 'dotenv/config'
 
 // Load from .env.local if DATABASE_URL is not set
-if (!process.env.DATABASE_URL) {
+if (!process.env.DATABASE_URL && !process.env.POSTGRES_URL) {
   dotenv.config({ path: '.env.local' })
 }
 
@@ -13,6 +13,6 @@ export default defineConfig({
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL!
+    url: (process.env.DATABASE_URL ?? process.env.POSTGRES_URL)!
   }
 })

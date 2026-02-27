@@ -1,12 +1,16 @@
 'use client'
 
 import {
+  Code2,
+  Globe,
   LightbulbIcon,
   ListTodo,
   MessageSquare,
   Minimize2,
   Search
 } from 'lucide-react'
+
+import type { ToolPart } from '@/lib/types/ai'
 
 import { Separator } from '@/components/ui/separator'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -35,6 +39,18 @@ export function InspectorPanel() {
           icon: <ListTodo size={18} />,
           title: 'Todo List'
         }
+      case 'tool-runCode': {
+        const toolPart = part as ToolPart<'runCode'>
+        const lang =
+          (toolPart.state === 'output-available'
+            ? toolPart.output?.language
+            : undefined) ||
+          toolPart.input?.language ||
+          'javascript'
+        return lang === 'html'
+          ? { icon: <Globe size={18} />, title: 'HTML Preview' }
+          : { icon: <Code2 size={18} />, title: 'Code' }
+      }
       case 'reasoning':
         return {
           icon: <LightbulbIcon size={18} />,

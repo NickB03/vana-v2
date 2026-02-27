@@ -6,19 +6,35 @@ const TIMEOUT_MS = 5000
 
 export const codeExecutionTool = tool({
   description:
-    'Execute JavaScript code and return the output. Use this to run calculations, data transformations, string processing, algorithm demonstrations, or any computation the user needs. Always show your work by writing code rather than computing mentally.',
+    'Execute JavaScript code or render HTML visualizations. Use JavaScript for calculations, data transformations, and algorithms. Use HTML for interactive visualizations, charts (with CDN libraries like Chart.js, D3, Plotly), calculators, and mini-apps that benefit from visual rendering.',
   inputSchema: z.object({
-    code: z.string().describe('The JavaScript code to execute'),
+    code: z.string().describe('The code to execute or render'),
     language: z
-      .enum(['javascript'])
+      .enum(['javascript', 'html'])
       .default('javascript')
-      .describe('Programming language (currently JavaScript only)')
+      .describe(
+        'Programming language: javascript for computation, html for visual output'
+      )
   }),
   async *execute({ code, language }) {
     yield {
       state: 'running' as const,
       code,
       language
+    }
+
+    // HTML pass-through: no server-side execution needed
+    if (language === 'html') {
+      yield {
+        state: 'complete' as const,
+        code,
+        language,
+        output: code,
+        logs: '',
+        error: undefined,
+        executionTime: 0
+      }
+      return
     }
 
     const logs: string[] = []
