@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "next dev -p 43100",
-    "build": "next build && bun run migrate",
+    "build": "next build",
     "start": "next start -p 43100",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
