@@ -29,8 +29,7 @@ import type { ChatEventData } from './types'
  * ```
  */
 export async function trackChatEvent(data: ChatEventData): Promise<void> {
-  const isCloudDeployment =
-    process.env.VANA_CLOUD_DEPLOYMENT === 'true'
+  const isCloudDeployment = process.env.VANA_CLOUD_DEPLOYMENT === 'true'
 
   // Only track events in cloud deployment environment
   if (!isCloudDeployment) {

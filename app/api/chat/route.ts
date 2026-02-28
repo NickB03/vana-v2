@@ -93,8 +93,7 @@ export async function POST(req: Request) {
         ? (searchModeCookie as SearchMode)
         : 'quick'
 
-    const isCloudDeployment =
-      process.env.VANA_CLOUD_DEPLOYMENT === 'true'
+    const isCloudDeployment = process.env.VANA_CLOUD_DEPLOYMENT === 'true'
     const forceSpeed = isGuest || isCloudDeployment
     const modelCookieStore = forceSpeed
       ? ({

@@ -104,9 +104,9 @@ This creates a 2x2 matrix of possible model assignments. A separate `relatedQues
 
 Two profiles exist, selected by the `VANA_CLOUD_DEPLOYMENT` environment variable:
 
-| Profile   | File                         | Selected When                                                   |
-| --------- | ---------------------------- | --------------------------------------------------------------- |
-| `default` | `config/models/default.json` | Default (self-hosted)                                           |
+| Profile   | File                         | Selected When                |
+| --------- | ---------------------------- | ---------------------------- |
+| `default` | `config/models/default.json` | Default (self-hosted)        |
 | `cloud`   | `config/models/cloud.json`   | `VANA_CLOUD_DEPLOYMENT=true` |
 
 The config loader at `lib/config/load-models-config.ts`:

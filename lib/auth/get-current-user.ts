@@ -18,8 +18,7 @@ export async function getCurrentUser() {
 export async function getCurrentUserId() {
   const count = incrementAuthCallCount()
   perfLog(`getCurrentUserId called - count: ${count}`)
-  const isCloudDeployment =
-    process.env.VANA_CLOUD_DEPLOYMENT === 'true'
+  const isCloudDeployment = process.env.VANA_CLOUD_DEPLOYMENT === 'true'
 
   // Skip authentication mode (for personal Docker deployments)
   if (process.env.ENABLE_AUTH === 'false') {

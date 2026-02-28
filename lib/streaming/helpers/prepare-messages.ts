@@ -32,9 +32,7 @@ export async function prepareMessages(
       throw new Error('No messages found')
     }
 
-    let messageIndex = currentChat.messages.findIndex(
-      m => m.id === messageId
-    )
+    let messageIndex = currentChat.messages.findIndex(m => m.id === messageId)
 
     // Fallback: If message not found by ID, try to find by position
     if (messageIndex === -1) {

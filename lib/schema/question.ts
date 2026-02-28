@@ -6,7 +6,10 @@ export const questionSchema = z.object({
   options: z
     .array(
       z.object({
-        value: z.string().min(1).describe('Option identifier (always in English)'),
+        value: z
+          .string()
+          .min(1)
+          .describe('Option identifier (always in English)'),
         label: z.string().min(1).describe('Display text for the option')
       })
     )
@@ -26,7 +29,10 @@ export const strictQuestionSchema = z.object({
   options: z
     .array(
       z.object({
-        value: z.string().min(1).describe('Option identifier (always in English)'),
+        value: z
+          .string()
+          .min(1)
+          .describe('Option identifier (always in English)'),
         label: z.string().min(1).describe('Display text for the option')
       })
     )
