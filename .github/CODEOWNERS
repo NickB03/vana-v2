@@ -1,0 +1,22 @@
+# Default owner for everything
+* @maintainer
+
+# Database schema and migrations
+/lib/db/ @maintainer
+/supabase/ @maintainer
+
+# AI agent pipeline
+/lib/agents/ @maintainer
+/lib/tools/ @maintainer
+
+# Streaming infrastructure
+/lib/streaming/ @maintainer
+
+# Model configuration
+/config/models/ @maintainer
+
+# CI/CD and GitHub config
+/.github/ @maintainer
+
+# Documentation
+/docs/ @maintainer

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphic architecture. It provides a sophisticated chat interface that can perform multi-step research, execute tools, and generate comprehensive answers with citations.
+Vana v2 is an AI-powered answer engine with a generative UI. It provides a sophisticated chat interface that can perform multi-step research, execute tools, and generate comprehensive answers with citations.
 
 ### Core Technologies
 

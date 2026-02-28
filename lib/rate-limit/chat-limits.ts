@@ -30,8 +30,7 @@ async function checkOverallChatLimit(userId: string): Promise<{
   resetAt: number
 }> {
   const isCloudDeployment =
-    process.env.VANA_CLOUD_DEPLOYMENT === 'true' ||
-    process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true'
+    process.env.VANA_CLOUD_DEPLOYMENT === 'true'
 
   // If not in cloud deployment mode, allow unlimited requests
   if (!isCloudDeployment) {

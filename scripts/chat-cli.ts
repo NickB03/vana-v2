@@ -123,12 +123,6 @@ class ChatApiTester {
       return process.env.VANA_COOKIES
     }
 
-    if (process.env.MORPHIC_COOKIES) {
-      console.log(
-        '🍪 Using cookies from MORPHIC_COOKIES environment variable (legacy)'
-      )
-      return process.env.MORPHIC_COOKIES
-    }
     return undefined
   }
 
@@ -414,8 +408,7 @@ Note: Without authentication, you may get "User not authenticated" errors.
 Authentication:
 
 1. Add to .env.local: VANA_COOKIES="your-cookie-string"
-2. MORPHIC_COOKIES is also supported as a legacy fallback
-3. The script will automatically load cookies when it runs
+2. The script will automatically load cookies when it runs
 
 To get cookies:
 1. Open DevTools > Network tab

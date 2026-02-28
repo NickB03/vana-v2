@@ -32,8 +32,7 @@ async function checkGuestLimit(ip: string): Promise<{
   limit: number
 }> {
   const isCloudDeployment =
-    process.env.VANA_CLOUD_DEPLOYMENT === 'true' ||
-    process.env.MORPHIC_CLOUD_DEPLOYMENT === 'true'
+    process.env.VANA_CLOUD_DEPLOYMENT === 'true'
 
   if (!isCloudDeployment) {
     return { allowed: true, remaining: Infinity, resetAt: 0, limit: 0 }

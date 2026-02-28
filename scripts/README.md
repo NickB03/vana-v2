@@ -126,7 +126,7 @@ If you encounter "User not authenticated" errors:
 
 1. Ensure you're logged into Vana in your browser
 2. Get fresh cookies from DevTools
-3. Update `VANA_COOKIES` in `.env.local` (or `MORPHIC_COOKIES` for legacy fallback)
+3. Update `VANA_COOKIES` in `.env.local`
 4. Cookies expire after ~1 hour, so refresh them if needed
 
 #### API Errors
@@ -140,7 +140,7 @@ If you encounter "Selected provider is not enabled" errors:
 #### General Issues
 
 - Check the development server is running: `bun dev`
-- Verify `.env.local` exists and contains `VANA_COOKIES` (or legacy `MORPHIC_COOKIES`)
+- Verify `.env.local` exists and contains `VANA_COOKIES`
 - Use `DEBUG=1` prefix for verbose output
 - Ensure the API URL is accessible (default: `http://localhost:43100/api/chat`)
 
