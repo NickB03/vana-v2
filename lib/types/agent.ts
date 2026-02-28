@@ -6,6 +6,11 @@ import type {
   UIToolInvocation
 } from 'ai'
 
+import type { displayCitationsTool } from '../tools/display-citations'
+import type { displayLinkPreviewTool } from '../tools/display-link-preview'
+import type { displayOptionListTool } from '../tools/display-option-list'
+import type { displayPlanTool } from '../tools/display-plan'
+import type { displayTableTool } from '../tools/display-table'
 import type { fetchTool } from '../tools/fetch'
 import type { createQuestionTool } from '../tools/question'
 import type { createSearchTool } from '../tools/search'
@@ -16,6 +21,11 @@ export type ResearcherTools = {
   search: ReturnType<typeof createSearchTool>
   fetch: typeof fetchTool
   askQuestion: ReturnType<typeof createQuestionTool>
+  displayPlan: typeof displayPlanTool
+  displayTable: typeof displayTableTool
+  displayCitations: typeof displayCitationsTool
+  displayLinkPreview: typeof displayLinkPreviewTool
+  displayOptionList: typeof displayOptionListTool
 } & ReturnType<typeof createTodoTools>
 
 // Type alias for the researcher agent using ToolLoopAgent
@@ -37,6 +47,21 @@ export type QuestionToolInvocation = UIToolInvocation<
 export type TodoWriteToolInvocation = UIToolInvocation<
   ResearcherTools['todoWrite']
 >
+export type DisplayPlanToolInvocation = UIToolInvocation<
+  ResearcherTools['displayPlan']
+>
+export type DisplayTableToolInvocation = UIToolInvocation<
+  ResearcherTools['displayTable']
+>
+export type DisplayCitationsToolInvocation = UIToolInvocation<
+  ResearcherTools['displayCitations']
+>
+export type DisplayLinkPreviewToolInvocation = UIToolInvocation<
+  ResearcherTools['displayLinkPreview']
+>
+export type DisplayOptionListToolInvocation = UIToolInvocation<
+  ResearcherTools['displayOptionList']
+>
 
 // Union type for all tool invocations
 export type ResearcherToolInvocation =
@@ -44,6 +69,11 @@ export type ResearcherToolInvocation =
   | FetchToolInvocation
   | QuestionToolInvocation
   | TodoWriteToolInvocation
+  | DisplayPlanToolInvocation
+  | DisplayTableToolInvocation
+  | DisplayCitationsToolInvocation
+  | DisplayLinkPreviewToolInvocation
+  | DisplayOptionListToolInvocation
 
 // Helper type to extract tool names
 export type ResearcherToolName = keyof ResearcherTools

@@ -311,6 +311,30 @@ export function mapUIMessagePartsToDBParts(
         }
         return createToolPartMapping(basePart, part, 'todoRead')
 
+      // Display tool parts — route to dynamic columns for persistence
+      case 'tool-displayPlan':
+      case 'tool-displayTable':
+      case 'tool-displayCitations':
+      case 'tool-displayLinkPreview':
+      case 'tool-displayOptionList':
+        if (!isExtendedToolPart(part)) {
+          console.error('Invalid extended tool part:', part)
+          return null
+        }
+        return {
+          ...basePart,
+          type: 'tool-dynamic',
+          tool_toolCallId: part.toolCallId || generateId(),
+          tool_state: part.state || ('input-available' as ToolState),
+          tool_dynamic_name: part.type.substring(5), // e.g., 'displayPlan'
+          tool_dynamic_type: 'display',
+          tool_dynamic_input: part.input,
+          tool_dynamic_output:
+            part.state === 'output-available' ? part.output : undefined,
+          tool_errorText:
+            part.state === 'output-error' ? part.errorText : undefined
+        }
+
       // Data parts
       default:
         if (part.type.startsWith('data-')) {
@@ -396,11 +420,23 @@ export function mapDBPartToUIMessagePart(
 
         // Special handling for dynamic tools
         if (toolName === 'dynamic') {
+          // Reconstruct display tools to their original type for rich rendering
+          if (part.tool_dynamic_type === 'display' && part.tool_dynamic_name) {
+            return {
+              type: `tool-${part.tool_dynamic_name}` as any,
+              toolCallId: part.tool_toolCallId || '',
+              state: part.tool_state as any,
+              input: part.tool_dynamic_input,
+              output: part.tool_dynamic_output,
+              errorText: part.tool_errorText
+            }
+          }
+          // Regular dynamic tools (MCP, etc.)
           return {
             type: 'dynamic-tool',
             toolCallId: part.tool_toolCallId || '',
             toolName: part.tool_dynamic_name || '',
-            state: part.tool_state as any, // Maps directly to AI SDK states
+            state: part.tool_state as any,
             input: part.tool_dynamic_input,
             output: part.tool_dynamic_output,
             errorText: part.tool_errorText
@@ -681,6 +717,11 @@ function getToolNameFromType(toolName: string): string {
 
   // For dynamic tools (MCP and others)
   if (toolName.startsWith('mcp__') || toolName.startsWith('dynamic__')) {
+    return 'dynamic'
+  }
+
+  // Display tools route to dynamic columns
+  if (toolName.startsWith('display')) {
     return 'dynamic'
   }
 
