@@ -14,7 +14,7 @@ export function parseSelectionToIdSet(
   const arr =
     typeof value === 'string' ? [value] : Array.isArray(value) ? value : []
 
-  return new Set(maxSelections ? arr.slice(0, maxSelections) : arr)
+  return new Set(maxSelections != null ? arr.slice(0, maxSelections) : arr)
 }
 
 export function normalizeSelectionForOptions(

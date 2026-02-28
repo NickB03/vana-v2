@@ -377,7 +377,7 @@ function DataTableEmpty({ message }: { message: string }) {
   return (
     <TableBody>
       <TableRow className="bg-card h-24 text-center">
-        <TableCell colSpan={columns.length} role="status" aria-live="polite">
+        <TableCell colSpan={columns.length || 1} role="status" aria-live="polite">
           {message}
         </TableCell>
       </TableRow>
