@@ -283,7 +283,7 @@ export function OptionList({
       const isSelected = selectedIds.has(option.id)
       const isSelectionLocked =
         selectionMode === 'multi' &&
-        effectiveMaxSelections !== undefined &&
+        effectiveMaxSelections != null &&
         selectedCount >= effectiveMaxSelections &&
         !isSelected
       const isDisabled = option.disabled || isSelectionLocked
