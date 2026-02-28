@@ -295,10 +295,9 @@ export function ChatPanel({
                   <MessageCirclePlus className="size-4 group-hover:rotate-12 transition-all" />
                 </Button>
               )}
-              {process.env.NEXT_PUBLIC_VANA_CLOUD_DEPLOYMENT !== 'true' &&
-                process.env.NEXT_PUBLIC_MORPHIC_CLOUD_DEPLOYMENT !== 'true' && (
-                  <ModelTypeSelector disabled={isGuest} />
-                )}
+              {process.env.NEXT_PUBLIC_VANA_CLOUD_DEPLOYMENT !== 'true' && (
+                <ModelTypeSelector disabled={isGuest} />
+              )}
               <Button
                 type={isLoading ? 'button' : 'submit'}
                 size={'icon'}

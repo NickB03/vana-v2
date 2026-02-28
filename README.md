@@ -1,6 +1,12 @@
 # Vana v2
 
-Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphic architecture and tailored for Vana deployment and operations.
+![CI](https://github.com/NickB03/vana-v2/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/badge/license-Apache%202.0-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![Bun](https://img.shields.io/badge/Bun-runtime-f9f1e1)
+
+Vana v2 is an AI-powered answer engine with a generative UI, built for Vana deployment and operations.
 
 ## Overview
 
@@ -9,6 +15,49 @@ Vana v2 is an AI-powered answer engine with a generative UI, based on the Morphi
 - Search provider support (Tavily, Brave)
 - PostgreSQL + Drizzle for persisted chat history (via Supabase)
 - Supabase Auth, Supabase Storage, and Redis-backed limits
+
+## Tech Stack
+
+| Category  | Technology                            |
+| --------- | ------------------------------------- |
+| Framework | Next.js 16 (App Router)               |
+| Runtime   | Bun                                   |
+| Language  | TypeScript (strict mode)              |
+| Database  | PostgreSQL via Supabase + Drizzle ORM |
+| Auth      | Supabase Auth                         |
+| AI        | Vercel AI SDK + AI Gateway            |
+| Search    | Tavily (primary), Brave (multimedia)  |
+| Styling   | Tailwind CSS v4 + shadcn/ui           |
+| Testing   | Vitest                                |
+
+## Architecture
+
+```mermaid
+graph TD
+    Browser["Browser (React 19)"]
+    NextJS["Next.js 16 App Router"]
+    API["API Routes (/api/chat)"]
+    Agent["Researcher Agent (ToolLoopAgent)"]
+    AI["AI Providers (Gateway, OpenAI, Anthropic, Google, Ollama)"]
+    Search["Search Providers (Tavily, Brave, Exa, SearXNG, Firecrawl)"]
+    DB["Supabase PostgreSQL (Drizzle ORM)"]
+    Redis["Upstash Redis (Rate Limiting)"]
+    Auth["Supabase Auth"]
+    Langfuse["Langfuse (Tracing)"]
+
+    Browser -->|"SSE Stream"| NextJS
+    NextJS --> API
+    API -->|"Auth Check"| Auth
+    API -->|"Guest Rate Limit"| Redis
+    API --> Agent
+    Agent -->|"LLM Calls"| AI
+    Agent -->|"Tool Calls"| Search
+    Agent -->|"Persist Results"| DB
+    Agent -.->|"Telemetry"| Langfuse
+    Auth -->|"Session Cookies"| Browser
+```
+
+See [Architecture Documentation](docs/ARCHITECTURE.md) for detailed diagrams.
 
 ## Quickstart
 
@@ -48,12 +97,32 @@ Open http://localhost:43100.
 
 ## Documentation
 
-- [Launch decisions](docs/DECISIONS.md)
-- [Environment setup](docs/ENVIRONMENT.md)
-- [Configuration guide](docs/CONFIGURATION.md)
-- [Deployment guide](docs/DEPLOYMENT.md)
-- [Docker guide](docs/DOCKER.md)
+### Getting Started
+
+- [Environment Setup](docs/ENVIRONMENT.md)
+- [Configuration Guide](docs/CONFIGURATION.md)
+
+### Architecture
+
+- [System Architecture](docs/ARCHITECTURE.md)
+- [API Reference](docs/API.md)
+- [Streaming](docs/STREAMING.md)
+- [Search Providers](docs/SEARCH-PROVIDERS.md)
+- [Model Configuration](docs/MODEL-CONFIGURATION.md)
+
+### Operations
+
+- [Deployment Guide](docs/DEPLOYMENT.md)
+- [Docker Guide](docs/DOCKER.md)
 - [Runbooks](docs/runbooks/day-2-operations.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+
+### Contributing
+
+- [Contributing Guide](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+- [Launch Decisions](docs/DECISIONS.md)
+- [Security Policy](SECURITY.md)
 
 ## CI/CD Quality Gates
 

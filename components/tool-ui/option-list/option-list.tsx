@@ -368,7 +368,10 @@ export function OptionList({
         if (isSelected) {
           next.delete(optionId)
         } else {
-          if (effectiveMaxSelections != null && next.size >= effectiveMaxSelections) {
+          if (
+            effectiveMaxSelections != null &&
+            next.size >= effectiveMaxSelections
+          ) {
             return
           }
           next.add(optionId)

@@ -61,10 +61,7 @@ export async function retryDatabaseOperation<T>(
     maxDelayMs: 2000,
     onRetry: (error, attempt) => {
       const message = error instanceof Error ? error.message : String(error)
-      console.log(
-        `Retrying ${operationName} (attempt ${attempt}):`,
-        message
-      )
+      console.log(`Retrying ${operationName} (attempt ${attempt}):`, message)
     }
   })
 }
