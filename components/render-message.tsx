@@ -9,6 +9,7 @@ import type {
 } from '@/lib/types/ai'
 import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 
+import { tryRenderToolUIByName } from './tool-ui/registry'
 import { AnswerSection } from './answer-section'
 import { DynamicToolDisplay } from './dynamic-tool-display'
 import ResearchProcessSection from './research-process-section'
@@ -156,6 +157,32 @@ export function RenderMessage({
           citationMaps={citationMaps}
         />
       )
+    } else if (part.type?.startsWith?.('tool-display')) {
+      // Display tools render inline in the chat, not in Research Process
+      flushBuffer(`seg-${index}`)
+      const toolName = part.type.substring(5) // Remove 'tool-' prefix
+      if (part.state === 'output-available' && part.output) {
+        const rendered = tryRenderToolUIByName(toolName, part.output)
+        elements.push(
+          <div key={`${messageId}-display-tool-${index}`} className="my-2">
+            {rendered ?? (
+              <div className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+                {toolName} output could not be rendered
+              </div>
+            )}
+          </div>
+        )
+      } else if (
+        part.state === 'input-streaming' ||
+        part.state === 'input-available'
+      ) {
+        elements.push(
+          <div
+            key={`${messageId}-display-tool-${index}`}
+            className="my-2 h-24 animate-pulse rounded-lg bg-muted"
+          />
+        )
+      }
     } else if (
       part.type === 'reasoning' ||
       part.type?.startsWith?.('tool-') ||

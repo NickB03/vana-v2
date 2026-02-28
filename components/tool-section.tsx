@@ -4,6 +4,7 @@ import { UseChatHelpers } from '@ai-sdk/react'
 
 import type { ToolPart, UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
 
+import { tryRenderToolUIByName } from './tool-ui/registry'
 import FetchSection from './fetch-section'
 import { QuestionConfirmation } from './question-confirmation'
 import { SearchSection } from './search-section'
@@ -111,6 +112,32 @@ export function ToolSection({
           isLast={isLast}
         />
       )
+    case 'tool-displayPlan':
+    case 'tool-displayTable':
+    case 'tool-displayCitations':
+    case 'tool-displayLinkPreview':
+    case 'tool-displayOptionList': {
+      if (tool.state === 'output-available' && tool.output) {
+        const toolName = tool.type.substring(5) // Remove 'tool-' prefix
+        const rendered = tryRenderToolUIByName(toolName, tool.output)
+        return (
+          <div className="my-2">
+            {rendered ?? (
+              <div className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+                {toolName} output could not be rendered
+              </div>
+            )}
+          </div>
+        )
+      }
+      if (
+        tool.state === 'input-streaming' ||
+        tool.state === 'input-available'
+      ) {
+        return <div className="my-2 h-24 animate-pulse rounded-lg bg-muted" />
+      }
+      return null
+    }
     default:
       return null
   }

@@ -9,6 +9,11 @@ import type { ResearcherTools } from '@/lib/types/agent'
 import { type ModelType } from '@/lib/types/model-type'
 import { type Model } from '@/lib/types/models'
 
+import { displayCitationsTool } from '../tools/display-citations'
+import { displayLinkPreviewTool } from '../tools/display-link-preview'
+import { displayOptionListTool } from '../tools/display-option-list'
+import { displayPlanTool } from '../tools/display-plan'
+import { displayTableTool } from '../tools/display-table'
 import { fetchTool } from '../tools/fetch'
 import { createQuestionTool } from '../tools/question'
 import { createSearchTool } from '../tools/search'
@@ -101,21 +106,36 @@ export function createResearcher({
     // Configure based on search mode
     switch (searchMode) {
       case 'quick':
-        console.log(
-          '[Researcher] Quick mode: maxSteps=20, tools=[search, fetch]'
-        )
         systemPrompt = QUICK_MODE_PROMPT
-        activeToolsList = ['search', 'fetch']
+        activeToolsList = [
+          'search',
+          'fetch',
+          'displayPlan',
+          'displayTable',
+          'displayCitations',
+          'displayLinkPreview',
+          'displayOptionList'
+        ]
         maxSteps = 20
         searchTool = wrapSearchToolForQuickMode(originalSearchTool)
+        console.log(
+          `[Researcher] Quick mode: maxSteps=${maxSteps}, tools=[${activeToolsList.join(', ')}]`
+        )
         break
 
       case 'adaptive':
       default:
         systemPrompt = ADAPTIVE_MODE_PROMPT
-        activeToolsList = ['search', 'fetch']
-        // Only enable todo tools for quality model type
-        if (writer && 'todoWrite' in todoTools && modelType === 'quality') {
+        activeToolsList = [
+          'search',
+          'fetch',
+          'displayTable',
+          'displayCitations',
+          'displayLinkPreview',
+          'displayOptionList'
+        ]
+        // Enable todo tools when writer is available
+        if (writer && 'todoWrite' in todoTools) {
           activeToolsList.push('todoWrite')
         }
         console.log(
@@ -131,6 +151,11 @@ export function createResearcher({
       search: searchTool,
       fetch: fetchTool,
       askQuestion: askQuestionTool,
+      displayPlan: displayPlanTool,
+      displayTable: displayTableTool,
+      displayCitations: displayCitationsTool,
+      displayLinkPreview: displayLinkPreviewTool,
+      displayOptionList: displayOptionListTool,
       ...todoTools
     } as ResearcherTools
 

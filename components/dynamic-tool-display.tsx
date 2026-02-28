@@ -2,6 +2,8 @@
 
 import React from 'react'
 
+import { isRegisteredToolUI, tryRenderToolUIByName } from './tool-ui/registry'
+
 // This matches the structure from AI SDK v5
 type DynamicToolPart =
   | {
@@ -63,6 +65,20 @@ export function DynamicToolDisplay({ part }: DynamicToolDisplayProps) {
   const toolType = getToolType(part.toolName)
   const displayName = getDisplayName(part.toolName)
 
+  // Try rendering via registered Tool UI once (avoids double parse)
+  const renderedToolUI =
+    part.state === 'output-available'
+      ? tryRenderToolUIByName(part.toolName, part.output)
+      : null
+
+  // For registered tool UIs, render the rich component directly without wrapper
+  if (isRegisteredToolUI(part.toolName)) {
+    if (renderedToolUI) return <div className="my-2">{renderedToolUI}</div>
+    if (part.state === 'input-streaming' || part.state === 'input-available') {
+      return <div className="my-2 h-24 animate-pulse rounded-lg bg-muted" />
+    }
+  }
+
   return (
     <div className="dynamic-tool-container rounded-lg border p-4 my-2">
       <div className="flex items-center gap-2 mb-2">
@@ -86,14 +102,17 @@ export function DynamicToolDisplay({ part }: DynamicToolDisplayProps) {
       )}
 
       {/* Output display */}
-      {part.state === 'output-available' && (
-        <div className="mb-2">
-          <div className="text-xs text-muted-foreground mb-1">Output:</div>
-          <pre className="text-xs bg-muted p-2 rounded overflow-auto max-h-40">
-            <code>{JSON.stringify(part.output, null, 2)}</code>
-          </pre>
-        </div>
-      )}
+      {part.state === 'output-available' &&
+        (renderedToolUI ? (
+          <div className="mb-2">{renderedToolUI}</div>
+        ) : (
+          <div className="mb-2">
+            <div className="text-xs text-muted-foreground mb-1">Output:</div>
+            <pre className="text-xs bg-muted p-2 rounded overflow-auto max-h-40">
+              <code>{JSON.stringify(part.output, null, 2)}</code>
+            </pre>
+          </div>
+        ))}
 
       {/* Error display */}
       {part.state === 'output-error' && (
