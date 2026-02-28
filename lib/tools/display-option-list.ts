@@ -4,14 +4,14 @@ import { z } from 'zod'
 const OptionSchema = z.object({
   id: z.string().min(1).describe('Unique option identifier'),
   label: z.string().min(1).describe('Display label for the option'),
-  description: z.string().optional().describe('Additional context for the option')
+  description: z
+    .string()
+    .optional()
+    .describe('Additional context for the option')
 })
 
 const DisplayOptionListSchema = z.object({
-  id: z
-    .string()
-    .min(1)
-    .describe('Unique identifier for this option list'),
+  id: z.string().min(1).describe('Unique identifier for this option list'),
   options: z
     .array(OptionSchema)
     .min(1)

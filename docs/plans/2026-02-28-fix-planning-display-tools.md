@@ -15,6 +15,7 @@
 The `todoWrite` tool is gated behind `modelType === 'quality'` but most users (guests, cloud) are forced to `'speed'`. The prompt tells the model to use `todoWrite` for medium/complex queries, but the tool isn't available.
 
 **Files:**
+
 - Modify: `lib/agents/researcher.ts:139`
 
 **Step 1: Remove the modelType gate**
@@ -53,6 +54,7 @@ forced to 'speed'. The prompt already handles complexity assessment."
 In adaptive mode, `todoWrite` is the correct planning tool (stateful, supports CREATE/UPDATE/FINALIZE). Having `displayPlan` alongside creates ambiguity — the model picks the static one and items stay "pending" forever.
 
 **Files:**
+
 - Modify: `lib/agents/researcher.ts:129-137`
 
 **Step 1: Remove displayPlan from the adaptive activeToolsList**
@@ -60,28 +62,28 @@ In adaptive mode, `todoWrite` is the correct planning tool (stateful, supports C
 In `lib/agents/researcher.ts`, change lines 129-137 from:
 
 ```typescript
-        activeToolsList = [
-          'search',
-          'fetch',
-          'displayPlan',
-          'displayTable',
-          'displayCitations',
-          'displayLinkPreview',
-          'displayOptionList'
-        ]
+activeToolsList = [
+  'search',
+  'fetch',
+  'displayPlan',
+  'displayTable',
+  'displayCitations',
+  'displayLinkPreview',
+  'displayOptionList'
+]
 ```
 
 to:
 
 ```typescript
-        activeToolsList = [
-          'search',
-          'fetch',
-          'displayTable',
-          'displayCitations',
-          'displayLinkPreview',
-          'displayOptionList'
-        ]
+activeToolsList = [
+  'search',
+  'fetch',
+  'displayTable',
+  'displayCitations',
+  'displayLinkPreview',
+  'displayOptionList'
+]
 ```
 
 **Step 2: Run typecheck**
@@ -106,6 +108,7 @@ updatable). displayPlan is static and can't track progress."
 The prompt trigger list for `displayPlan` is too broad ("any query where the answer is naturally a sequence of steps"), causing the model to call it for research/summarize queries where it's inappropriate. The tool description also says "task breakdown" which encourages misuse.
 
 **Files:**
+
 - Modify: `lib/agents/prompts/search-mode-prompts.ts:106-110` (quick mode displayPlan)
 - Modify: `lib/agents/prompts/search-mode-prompts.ts:303-307` (adaptive mode displayPlan)
 - Modify: `lib/tools/display-plan.ts:27-28` (tool description)
@@ -195,6 +198,7 @@ instructional content from research planning."
 Defensive prompt: if `todoWrite` ever becomes unavailable (edge case), tell the model to skip planning rather than getting confused.
 
 **Files:**
+
 - Modify: `lib/agents/prompts/search-mode-prompts.ts:368-370`
 
 **Step 1: Add fallback after the todoWrite CRITICAL RULE section**
@@ -224,6 +228,7 @@ git commit -m "fix: add todoWrite fallback guidance in adaptive prompt"
 Display tools save as `type: 'tool-dynamic'` with `tool_dynamic_type: 'display'` but load back as `type: 'dynamic-tool'`. This misses the `startsWith('tool-display')` check in `render-message.tsx:160`, causing fallthrough to the generic `DynamicToolDisplay` wrapper ("Custom Tool" header + raw JSON).
 
 **Files:**
+
 - Modify: `lib/utils/message-mapping.ts:422-431`
 
 **Step 1: Reconstruct display tool types on DB load**
@@ -231,45 +236,45 @@ Display tools save as `type: 'tool-dynamic'` with `tool_dynamic_type: 'display'`
 In `lib/utils/message-mapping.ts`, replace lines 422-431:
 
 ```typescript
-        if (toolName === 'dynamic') {
-          return {
-            type: 'dynamic-tool',
-            toolCallId: part.tool_toolCallId || '',
-            toolName: part.tool_dynamic_name || '',
-            state: part.tool_state as any, // Maps directly to AI SDK states
-            input: part.tool_dynamic_input,
-            output: part.tool_dynamic_output,
-            errorText: part.tool_errorText
-          }
-        }
+if (toolName === 'dynamic') {
+  return {
+    type: 'dynamic-tool',
+    toolCallId: part.tool_toolCallId || '',
+    toolName: part.tool_dynamic_name || '',
+    state: part.tool_state as any, // Maps directly to AI SDK states
+    input: part.tool_dynamic_input,
+    output: part.tool_dynamic_output,
+    errorText: part.tool_errorText
+  }
+}
 ```
 
 with:
 
 ```typescript
-        if (toolName === 'dynamic') {
-          // Reconstruct display tools to their original type for rich rendering
-          if (part.tool_dynamic_type === 'display' && part.tool_dynamic_name) {
-            return {
-              type: `tool-${part.tool_dynamic_name}` as any,
-              toolCallId: part.tool_toolCallId || '',
-              state: part.tool_state as any,
-              input: part.tool_dynamic_input,
-              output: part.tool_dynamic_output,
-              errorText: part.tool_errorText
-            }
-          }
-          // Regular dynamic tools (MCP, etc.)
-          return {
-            type: 'dynamic-tool',
-            toolCallId: part.tool_toolCallId || '',
-            toolName: part.tool_dynamic_name || '',
-            state: part.tool_state as any,
-            input: part.tool_dynamic_input,
-            output: part.tool_dynamic_output,
-            errorText: part.tool_errorText
-          }
-        }
+if (toolName === 'dynamic') {
+  // Reconstruct display tools to their original type for rich rendering
+  if (part.tool_dynamic_type === 'display' && part.tool_dynamic_name) {
+    return {
+      type: `tool-${part.tool_dynamic_name}` as any,
+      toolCallId: part.tool_toolCallId || '',
+      state: part.tool_state as any,
+      input: part.tool_dynamic_input,
+      output: part.tool_dynamic_output,
+      errorText: part.tool_errorText
+    }
+  }
+  // Regular dynamic tools (MCP, etc.)
+  return {
+    type: 'dynamic-tool',
+    toolCallId: part.tool_toolCallId || '',
+    toolName: part.tool_dynamic_name || '',
+    state: part.tool_state as any,
+    input: part.tool_dynamic_input,
+    output: part.tool_dynamic_output,
+    errorText: part.tool_errorText
+  }
+}
 ```
 
 **Step 2: Run typecheck**
@@ -296,6 +301,7 @@ so render-message.tsx catches them correctly."
 Defense-in-depth: if a display tool ever reaches `DynamicToolDisplay` (e.g., non-display dynamic tools that match a registry entry), render only the rich component without the "Custom Tool" header/input/status wrapper.
 
 **Files:**
+
 - Modify: `components/tool-ui/registry.tsx` (add `isRegisteredToolUI` helper)
 - Modify: `components/dynamic-tool-display.tsx:44-143` (early return for registered tools)
 
@@ -360,6 +366,7 @@ header + raw JSON input."
 When `tryRenderToolUIByName` returns null (schema parse failed), show a placeholder instead of silently dropping the component.
 
 **Files:**
+
 - Modify: `components/render-message.tsx:164-172`
 - Modify: `components/tool-section.tsx:120-131`
 
@@ -368,33 +375,33 @@ When `tryRenderToolUIByName` returns null (schema parse failed), show a placehol
 In `components/render-message.tsx`, replace lines 164-172:
 
 ```tsx
-      if (part.state === 'output-available' && part.output) {
-        const rendered = tryRenderToolUIByName(toolName, part.output)
-        if (rendered) {
-          elements.push(
-            <div key={`${messageId}-display-tool-${index}`} className="my-2">
-              {rendered}
-            </div>
-          )
-        }
-      }
+if (part.state === 'output-available' && part.output) {
+  const rendered = tryRenderToolUIByName(toolName, part.output)
+  if (rendered) {
+    elements.push(
+      <div key={`${messageId}-display-tool-${index}`} className="my-2">
+        {rendered}
+      </div>
+    )
+  }
+}
 ```
 
 with:
 
 ```tsx
-      if (part.state === 'output-available' && part.output) {
-        const rendered = tryRenderToolUIByName(toolName, part.output)
-        elements.push(
-          <div key={`${messageId}-display-tool-${index}`} className="my-2">
-            {rendered ?? (
-              <div className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
-                {toolName} output could not be rendered
-              </div>
-            )}
-          </div>
-        )
-      }
+if (part.state === 'output-available' && part.output) {
+  const rendered = tryRenderToolUIByName(toolName, part.output)
+  elements.push(
+    <div key={`${messageId}-display-tool-${index}`} className="my-2">
+      {rendered ?? (
+        <div className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+          {toolName} output could not be rendered
+        </div>
+      )}
+    </div>
+  )
+}
 ```
 
 **Step 2: Add same fallback in tool-section.tsx**
@@ -402,29 +409,29 @@ with:
 In `components/tool-section.tsx`, replace lines 120-124:
 
 ```tsx
-      if (tool.state === 'output-available' && tool.output) {
-        const toolName = tool.type.substring(5) // Remove 'tool-' prefix
-        const rendered = tryRenderToolUIByName(toolName, tool.output)
-        if (rendered) return <div className="my-2">{rendered}</div>
-      }
+if (tool.state === 'output-available' && tool.output) {
+  const toolName = tool.type.substring(5) // Remove 'tool-' prefix
+  const rendered = tryRenderToolUIByName(toolName, tool.output)
+  if (rendered) return <div className="my-2">{rendered}</div>
+}
 ```
 
 with:
 
 ```tsx
-      if (tool.state === 'output-available' && tool.output) {
-        const toolName = tool.type.substring(5) // Remove 'tool-' prefix
-        const rendered = tryRenderToolUIByName(toolName, tool.output)
-        return (
-          <div className="my-2">
-            {rendered ?? (
-              <div className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
-                {toolName} output could not be rendered
-              </div>
-            )}
-          </div>
-        )
-      }
+if (tool.state === 'output-available' && tool.output) {
+  const toolName = tool.type.substring(5) // Remove 'tool-' prefix
+  const rendered = tryRenderToolUIByName(toolName, tool.output)
+  return (
+    <div className="my-2">
+      {rendered ?? (
+        <div className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+          {toolName} output could not be rendered
+        </div>
+      )}
+    </div>
+  )
+}
 ```
 
 **Step 3: Run typecheck and lint**
@@ -456,6 +463,7 @@ Expected: All PASS
 Start dev server: `bun dev`
 
 Test these scenarios:
+
 1. **Quick + "Summarize recent climate change research"**: `displayPlan` should NOT be called. Model searches and answers directly.
 2. **Quick + "How do I learn Python"**: `displayPlan` IS called with instructional steps.
 3. **Adaptive + speed + complex query**: `todoWrite` IS called with CREATE/UPDATE/FINALIZE flow.
