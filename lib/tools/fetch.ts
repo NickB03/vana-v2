@@ -97,7 +97,7 @@ async function fetchJinaReaderData(url: string): Promise<SearchResultsType> {
       }
     })
     const json = await response.json()
-    if (!json.data || json.data.length === 0) {
+    if (!json.data || !json.data.content) {
       throw new Error('No data returned from Jina Reader API')
     }
 
@@ -136,7 +136,7 @@ async function fetchTavilyExtractData(url: string): Promise<SearchResultsType> {
     }
 
     const result = json.results[0]
-    const content = result.raw_content.slice(0, CONTENT_CHARACTER_LIMIT)
+    const content = (result.raw_content || '').slice(0, CONTENT_CHARACTER_LIMIT)
 
     return {
       results: [

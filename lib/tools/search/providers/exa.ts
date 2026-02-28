@@ -24,10 +24,10 @@ export class ExaSearchProvider extends BaseSearchProvider {
     })
 
     return {
-      results: exaResults.results.map((result: any) => ({
-        title: result.title,
+      results: exaResults.results.map(result => ({
+        title: result.title ?? '',
         url: result.url,
-        content: result.highlight || result.text
+        content: result.highlights?.join(' ') ?? ''
       })),
       query,
       images: [],

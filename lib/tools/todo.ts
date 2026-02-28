@@ -7,7 +7,7 @@ export const todoItemSchema = z.object({
     .string()
     .optional()
     .describe('Unique task identifier (auto-generated if omitted)'),
-  content: z.string().describe('The task description'),
+  content: z.string().min(1).describe('The task description'),
   status: z
     .enum(['pending', 'in_progress', 'completed'])
     .default('pending')
@@ -31,6 +31,7 @@ type NormalizedTodo = Required<TodoItem>
 export const todoWriteInputSchema = z.object({
   todos: z
     .array(todoItemSchema)
+    .min(1)
     .describe('Tasks to create or update (partial updates supported)'),
   progressMessage: z
     .string()

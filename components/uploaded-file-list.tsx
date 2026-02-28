@@ -50,6 +50,7 @@ export const UploadedFileList = React.memo(function UploadedFileList({
                 type="button"
                 onClick={() => onRemove(index)}
                 className="absolute top-1 right-1 bg-black/40 hover:bg-red-600 text-white rounded-full p-1 z-20"
+                aria-label={`Remove file ${it.name || it.file.name}`}
               >
                 <X size={12} />
               </button>

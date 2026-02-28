@@ -5,7 +5,7 @@ export interface RetryOptions {
   initialDelayMs?: number
   maxDelayMs?: number
   backoffMultiplier?: number
-  onRetry?: (error: any, attempt: number) => void
+  onRetry?: (error: unknown, attempt: number) => void
 }
 
 export async function retryWithBackoff<T>(
@@ -20,7 +20,7 @@ export async function retryWithBackoff<T>(
     onRetry
   } = options
 
-  let lastError: any
+  let lastError: unknown
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -60,9 +60,10 @@ export async function retryDatabaseOperation<T>(
     initialDelayMs: 200,
     maxDelayMs: 2000,
     onRetry: (error, attempt) => {
+      const message = error instanceof Error ? error.message : String(error)
       console.log(
         `Retrying ${operationName} (attempt ${attempt}):`,
-        error.message
+        message
       )
     }
   })

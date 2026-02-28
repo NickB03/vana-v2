@@ -19,7 +19,7 @@ export class FirecrawlClient {
     const body = JSON.stringify({
       query: options.query,
       sources: options.sources || ['web'],
-      limit: options.limit || 10,
+      limit: options.limit ?? 10,
       location: options.location,
       tbs: options.tbs,
       scrapeOptions: {
@@ -43,7 +43,7 @@ export class FirecrawlClient {
     const body = JSON.stringify({
       query: options.query,
       sources: ['images'],
-      limit: options.limit || 8
+      limit: options.limit ?? 8
     })
 
     const response = await fetch(`${this.baseUrl}/search`, {

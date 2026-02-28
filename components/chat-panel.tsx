@@ -194,6 +194,7 @@ export function ChatPanel({
             rows={2}
             maxRows={5}
             tabIndex={0}
+            aria-label="Message input"
             onCompositionStart={handleCompositionStart}
             onCompositionEnd={handleCompositionEnd}
             onFocus={() => setIsInputFocused(true)}
@@ -289,6 +290,7 @@ export function ChatPanel({
                   className="shrink-0 rounded-full group"
                   type="button"
                   disabled={isLoading}
+                  aria-label="New chat"
                 >
                   <MessageCirclePlus className="size-4 group-hover:rotate-12 transition-all" />
                 </Button>
@@ -303,6 +305,7 @@ export function ChatPanel({
                 className={cn(isLoading && 'animate-pulse', 'rounded-full')}
                 disabled={input.length === 0 && !isLoading}
                 onClick={isLoading ? stop : undefined}
+                aria-label={isLoading ? 'Stop generating' : 'Send message'}
               >
                 {isLoading ? <Square size={20} /> : <ArrowUp size={20} />}
               </Button>

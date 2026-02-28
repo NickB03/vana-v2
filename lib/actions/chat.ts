@@ -111,7 +111,7 @@ export async function createChatAndSaveMessage(
 
   // Extract title from message if not provided
   const chatTitle =
-    title || getTextFromParts(message.parts as any[]) || DEFAULT_CHAT_TITLE
+    title || getTextFromParts(message.parts) || DEFAULT_CHAT_TITLE
 
   // Create chat
   const chat = await dbActions.createChat({

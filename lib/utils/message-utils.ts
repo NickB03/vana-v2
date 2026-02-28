@@ -5,7 +5,7 @@ import { type Message as DBMessage } from '@/lib/db/schema'
 // Interface matching the expected DB message input format
 interface DatabaseMessageInput {
   role: DBMessage['role']
-  parts: any // Using 'any' here as we don't know the exact structure expected by the database
+  parts: Array<{ text: string }>
 }
 
 /**
@@ -17,7 +17,7 @@ export function convertMessageForDB(
   message: ModelMessage
 ): DatabaseMessageInput {
   // Handle case where content might be a string, array, or null
-  let parts: any
+  let parts: Array<{ text: string }>
 
   if (message.content === null || message.content === undefined) {
     parts = []

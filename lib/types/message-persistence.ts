@@ -12,7 +12,7 @@ export const dataPartSchema = z.object({}).passthrough()
 export type DataPart = z.infer<typeof dataPartSchema>
 
 // Provider metadata
-export type ProviderMetadata = Record<string, any>
+export type ProviderMetadata = Record<string, unknown>
 
 // DB type definitions
 export type DBMessagePart = typeof parts.$inferInsert

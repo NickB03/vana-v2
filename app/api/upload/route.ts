@@ -42,10 +42,11 @@ export async function POST(req: NextRequest) {
     }
     const result = await uploadFileToSupabase(file, userId, chatId)
     return NextResponse.json({ success: true, file: result }, { status: 200 })
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Upload Error:', err)
+    const message = err instanceof Error ? err.message : String(err)
     return NextResponse.json(
-      { error: 'Upload failed', message: err.message },
+      { error: 'Upload failed', message },
       { status: 500 }
     )
   }

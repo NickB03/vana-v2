@@ -12,9 +12,9 @@ export function getCookie(name: string): string | null {
 
   const cookies = document.cookie.split(';')
   for (const cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.trim().split('=')
+    const [cookieName, ...rest] = cookie.trim().split('=')
     if (cookieName === name) {
-      return cookieValue
+      return rest.join('=')
     }
   }
   return null

@@ -182,7 +182,7 @@ export const SerializableOptionListSchema = OptionListPropsSchemaBase.omit({
   value: true
 })
   .extend({
-    options: z.array(OptionListOptionSchema.omit({ icon: true })),
+    options: z.array(OptionListOptionSchema.omit({ icon: true })).min(1),
     actions: z
       .union([
         z.array(SerializableActionSchema),

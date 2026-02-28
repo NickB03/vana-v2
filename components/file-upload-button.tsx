@@ -84,6 +84,7 @@ export function FileUploadButton({
         className="rounded-full"
         type="button"
         onClick={() => inputRef.current?.click()}
+        aria-label="Attach file"
       >
         <Paperclip size={18} />
       </Button>

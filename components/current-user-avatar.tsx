@@ -12,6 +12,7 @@ export const CurrentUserAvatar = () => {
   const name = useCurrentUserName()
   const initials = name
     ?.split(' ')
+    ?.filter(Boolean)
     ?.map(word => word[0])
     ?.join('')
     ?.toUpperCase()

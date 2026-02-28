@@ -66,7 +66,7 @@ export class OllamaClient {
       return {
         name: data.name,
         capabilities: data.capabilities || [],
-        contextWindow: data.context_window || 128_000,
+        contextWindow: data.context_window ?? 128_000,
         parameters: data.parameters || {}
       }
     } catch (error) {

@@ -236,7 +236,7 @@ export async function createChatStreamResponse(
         }
       }
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       // console.error('Stream error:', error)
       return error instanceof Error ? error.message : String(error)
     },
