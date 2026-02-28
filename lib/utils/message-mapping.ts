@@ -13,11 +13,15 @@ import type {
 } from '@/lib/types/message-persistence'
 
 // Define local types for message parts that are compatible with the AI SDK
-type TextUIPart = { type: 'text'; text: string; providerMetadata?: any }
+type TextUIPart = {
+  type: 'text'
+  text: string
+  providerMetadata?: Record<string, unknown>
+}
 type ReasoningUIPart = {
   type: 'reasoning'
   text: string
-  providerMetadata?: any
+  providerMetadata?: Record<string, unknown>
 }
 type FileUIPart = {
   type: 'file'
@@ -44,14 +48,16 @@ type ToolCallPart = {
   type: 'tool-call'
   toolCallId: string
   toolName: string
-  args: any
+  args: Record<string, unknown>
 }
 type ToolResultPart = {
   type: 'tool-result'
   toolCallId: string
-  result: any
+  result: unknown
   isError?: boolean
 }
+// Note: index signature uses `any` because `unknown` would poison union member
+// property access during switch-case type narrowing on UIMessagePart
 type DataPart = { type: string; [key: string]: any }
 
 type UIMessagePart =
@@ -65,20 +71,24 @@ type UIMessagePart =
   | DataPart
 
 // Type guards
-function isToolCallPart(part: any): part is ToolCallPart {
+function isToolCallPart(part: unknown): part is ToolCallPart {
+  if (typeof part !== 'object' || part === null) return false
+  const p = part as Record<string, unknown>
   return (
-    part.type === 'tool-call' &&
-    typeof part.toolCallId === 'string' &&
-    typeof part.toolName === 'string' &&
-    part.args !== undefined
+    p.type === 'tool-call' &&
+    typeof p.toolCallId === 'string' &&
+    typeof p.toolName === 'string' &&
+    p.args !== undefined
   )
 }
 
-function isToolResultPart(part: any): part is ToolResultPart {
+function isToolResultPart(part: unknown): part is ToolResultPart {
+  if (typeof part !== 'object' || part === null) return false
+  const p = part as Record<string, unknown>
   return (
-    part.type === 'tool-result' &&
-    typeof part.toolCallId === 'string' &&
-    part.result !== undefined
+    p.type === 'tool-result' &&
+    typeof p.toolCallId === 'string' &&
+    p.result !== undefined
   )
 }
 
@@ -88,17 +98,14 @@ type ExtendedToolPart = {
   toolCallId?: string
   state?: ToolState
   errorText?: string
-  input?: any
-  output?: any
+  input?: unknown
+  output?: unknown
 }
 
-function isExtendedToolPart(part: any): part is ExtendedToolPart {
-  return (
-    typeof part === 'object' &&
-    part !== null &&
-    typeof part.type === 'string' &&
-    part.type.startsWith('tool-')
-  )
+function isExtendedToolPart(part: unknown): part is ExtendedToolPart {
+  if (typeof part !== 'object' || part === null) return false
+  const p = part as Record<string, unknown>
+  return typeof p.type === 'string' && p.type.startsWith('tool-')
 }
 
 // Helper function to create tool part mapping
@@ -737,8 +744,10 @@ function getToolNameFromCallId(
 ): string {
   // Find tool-call part with the same toolCallId
   const toolCallPart = allParts.find(
-    part => part.type === 'tool-call' && part.toolCallId === toolCallId
-  ) as any
+    (part): part is ToolCallPart =>
+      part.type === 'tool-call' &&
+      (part as ToolCallPart).toolCallId === toolCallId
+  )
 
   if (toolCallPart) {
     return getToolNameFromType(toolCallPart.toolName)

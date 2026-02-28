@@ -138,7 +138,7 @@ export const ActionButtonsPropsSchema = z.object({
 
 export const SerializableActionSchema = ActionSchema.omit({ icon: true })
 export const SerializableActionsSchema = ActionButtonsPropsSchema.extend({
-  actions: z.array(SerializableActionSchema)
+  actions: z.array(SerializableActionSchema).min(1)
 }).omit({ className: true })
 
 export interface ActionsConfig {

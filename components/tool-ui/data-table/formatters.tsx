@@ -446,8 +446,13 @@ export function renderFormattedValue({
       )
     case 'date':
       return <DateValue value={String(value)} options={fmt} locale={locale} />
-    case 'boolean':
-      return <BooleanValue value={Boolean(value)} options={fmt} />
+    case 'boolean': {
+      const boolValue =
+        typeof value === 'string'
+          ? value.toLowerCase() === 'true' || value === '1'
+          : Boolean(value)
+      return <BooleanValue value={boolValue} options={fmt} />
+    }
     case 'link':
       return <LinkValue value={String(value)} options={fmt} row={row} />
     case 'number':
