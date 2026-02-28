@@ -33,16 +33,16 @@ export async function prepareMessages(
     }
 
     let messageIndex = currentChat.messages.findIndex(
-      (m: any) => m.id === messageId
+      m => m.id === messageId
     )
 
     // Fallback: If message not found by ID, try to find by position
     if (messageIndex === -1) {
       const lastAssistantIndex = currentChat.messages.findLastIndex(
-        (m: any) => m.role === 'assistant'
+        m => m.role === 'assistant'
       )
       const lastUserIndex = currentChat.messages.findLastIndex(
-        (m: any) => m.role === 'user'
+        m => m.role === 'user'
       )
 
       if (lastAssistantIndex >= 0 || lastUserIndex >= 0) {

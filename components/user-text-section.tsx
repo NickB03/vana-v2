@@ -133,6 +133,7 @@ export const UserTextSection: React.FC<UserTextSectionProps> = ({
                 size="icon"
                 className="rounded-full h-7 w-7"
                 onClick={handleEditClick}
+                aria-label="Edit message"
               >
                 <Pencil className="size-3.5" />
               </Button>

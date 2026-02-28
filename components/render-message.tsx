@@ -51,7 +51,7 @@ export function RenderMessage({
   if (message.role === 'user') {
     return (
       <>
-        {message.parts?.map((part: any, index: number) => {
+        {message.parts?.map((part, index) => {
           switch (part.type) {
             case 'text':
               return (
@@ -83,6 +83,8 @@ export function RenderMessage({
 
   // New rendering: interleave text parts with grouped non-text segments
   const elements: React.ReactNode[] = []
+  // Buffer collects non-text parts for ResearchProcessSection.
+  // Uses any[] because UIMessage['parts'] is wider than ResearchProcessSection's MessagePart union.
   let buffer: any[] = []
   const flushBuffer = (keySuffix: string) => {
     if (buffer.length === 0) return
@@ -102,7 +104,7 @@ export function RenderMessage({
     buffer = []
   }
 
-  message.parts?.forEach((part: any, index: number) => {
+  message.parts?.forEach((part, index) => {
     if (part.type === 'text') {
       // Check if there's buffered content before this text part
       const hasBufferedContent = buffer.length > 0
@@ -161,8 +163,9 @@ export function RenderMessage({
       // Display tools render inline in the chat, not in Research Process
       flushBuffer(`seg-${index}`)
       const toolName = part.type.substring(5) // Remove 'tool-' prefix
-      if (part.state === 'output-available' && part.output) {
-        const rendered = tryRenderToolUIByName(toolName, part.output)
+      const toolPart = part as { state?: string; output?: unknown }
+      if (toolPart.state === 'output-available' && toolPart.output) {
+        const rendered = tryRenderToolUIByName(toolName, toolPart.output)
         elements.push(
           <div key={`${messageId}-display-tool-${index}`} className="my-2">
             {rendered ?? (
@@ -173,8 +176,8 @@ export function RenderMessage({
           </div>
         )
       } else if (
-        part.state === 'input-streaming' ||
-        part.state === 'input-available'
+        toolPart.state === 'input-streaming' ||
+        toolPart.state === 'input-available'
       ) {
         elements.push(
           <div

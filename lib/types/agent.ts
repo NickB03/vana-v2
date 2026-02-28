@@ -82,13 +82,21 @@ export type ResearcherToolName = keyof ResearcherTools
 export function isSearchToolInvocation(
   invocation: ResearcherToolInvocation
 ): invocation is SearchToolInvocation {
-  return 'query' in (invocation as any).input
+  return (
+    typeof invocation.input === 'object' &&
+    invocation.input !== null &&
+    'query' in invocation.input
+  )
 }
 
 export function isFetchToolInvocation(
   invocation: ResearcherToolInvocation
 ): invocation is FetchToolInvocation {
-  return 'url' in (invocation as any).input
+  return (
+    typeof invocation.input === 'object' &&
+    invocation.input !== null &&
+    'url' in invocation.input
+  )
 }
 
 // Response type for agent.respond()

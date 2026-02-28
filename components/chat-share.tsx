@@ -76,6 +76,7 @@ export function ChatShare({ chatId, className }: ChatShareProps) {
             size="icon"
             variant={'ghost'}
             onClick={() => setOpen(true)}
+            aria-label="Share chat"
           >
             <Share size={14} />
           </Button>

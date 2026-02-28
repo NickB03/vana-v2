@@ -283,7 +283,7 @@ export function OptionList({
       const isSelected = selectedIds.has(option.id)
       const isSelectionLocked =
         selectionMode === 'multi' &&
-        effectiveMaxSelections !== undefined &&
+        effectiveMaxSelections != null &&
         selectedCount >= effectiveMaxSelections &&
         !isSelected
       const isDisabled = option.disabled || isSelectionLocked
@@ -368,7 +368,7 @@ export function OptionList({
         if (isSelected) {
           next.delete(optionId)
         } else {
-          if (effectiveMaxSelections && next.size >= effectiveMaxSelections) {
+          if (effectiveMaxSelections != null && next.size >= effectiveMaxSelections) {
             return
           }
           next.add(optionId)
@@ -421,7 +421,7 @@ export function OptionList({
     } satisfies ReturnType<typeof normalizeActionsConfig>
   }, [customActions])
 
-  const isConfirmDisabled = selectedCount < minSelections || selectedCount === 0
+  const isConfirmDisabled = selectedCount < minSelections
   const hasNothingToClear = selectedCount === 0
 
   const focusOptionAt = useCallback((index: number) => {

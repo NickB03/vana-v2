@@ -2,14 +2,15 @@ import { z } from 'zod'
 
 // Standard schema with optional fields for inputLabel and inputPlaceholder
 export const questionSchema = z.object({
-  question: z.string().describe('The main question to ask the user'),
+  question: z.string().min(1).describe('The main question to ask the user'),
   options: z
     .array(
       z.object({
-        value: z.string().describe('Option identifier (always in English)'),
-        label: z.string().describe('Display text for the option')
+        value: z.string().min(1).describe('Option identifier (always in English)'),
+        label: z.string().min(1).describe('Display text for the option')
       })
     )
+    .min(1)
     .describe('List of predefined options'),
   allowsInput: z.boolean().describe('Whether to allow free-form text input'),
   inputLabel: z.string().optional().describe('Label for free-form input field'),
@@ -21,14 +22,15 @@ export const questionSchema = z.object({
 
 // Strict schema with all fields required, for specific models like o3-mini
 export const strictQuestionSchema = z.object({
-  question: z.string().describe('The main question to ask the user'),
+  question: z.string().min(1).describe('The main question to ask the user'),
   options: z
     .array(
       z.object({
-        value: z.string().describe('Option identifier (always in English)'),
-        label: z.string().describe('Display text for the option')
+        value: z.string().min(1).describe('Option identifier (always in English)'),
+        label: z.string().min(1).describe('Display text for the option')
       })
     )
+    .min(1)
     .describe('List of predefined options'),
   allowsInput: z.boolean().describe('Whether to allow free-form text input'),
   inputLabel: z.string().describe('Label for free-form input field'),

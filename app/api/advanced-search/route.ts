@@ -297,7 +297,7 @@ async function advancedSearchXNGSearch(
           return imgSrc.startsWith('http') ? imgSrc : `${apiUrl}${imgSrc}`
         })
         .filter(Boolean),
-      number_of_results: data.number_of_results || generalResults.length
+      number_of_results: data.number_of_results ?? generalResults.length
     }
   } catch (error) {
     console.error('SearchXNG API error:', error)

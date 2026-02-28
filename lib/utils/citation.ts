@@ -25,7 +25,7 @@ export function extractCitationMaps(
 
   if (!message.parts) return citationMaps
 
-  message.parts.forEach((part: any) => {
+  message.parts.forEach(part => {
     // Check for search tool output
     if (
       part.type === 'tool-search' &&

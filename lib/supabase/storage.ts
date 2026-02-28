@@ -38,8 +38,9 @@ export async function uploadFileToSupabase(
       mediaType: file.type,
       type: 'file'
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Supabase Upload Error:', error)
-    throw new Error('Upload failed: ' + error.message)
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error('Upload failed: ' + message)
   }
 }

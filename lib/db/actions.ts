@@ -14,6 +14,7 @@ import { incrementDbOperationCount } from '@/lib/utils/perf-tracking'
 
 import type { Chat, Message } from './schema'
 import { chats, generateId, messages, parts } from './schema'
+import type { TxInstance } from './with-rls'
 import { withOptionalRLS, withRLS } from './with-rls'
 import { db } from '.'
 
@@ -92,8 +93,10 @@ export async function upsertMessage(
 
   // Use RLS if userId is provided, otherwise use regular db
   const executeFn = userId
-    ? (callback: (tx: any) => Promise<Message>) => withRLS(userId, callback)
-    : (callback: (tx: any) => Promise<Message>) => db.transaction(callback)
+    ? (callback: (tx: TxInstance) => Promise<Message>) =>
+        withRLS(userId, callback)
+    : (callback: (tx: TxInstance) => Promise<Message>) =>
+        db.transaction(callback)
 
   const result = await executeFn(async tx => {
     // 1. Insert or update the message

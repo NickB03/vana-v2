@@ -37,7 +37,7 @@ export default function UserMenu({ user }: UserMenuProps) {
 
   const getInitials = (name: string, email: string | undefined) => {
     if (name && name !== 'User') {
-      const names = name.split(' ')
+      const names = name.split(' ').filter(Boolean)
       if (names.length > 1) {
         return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase()
       }

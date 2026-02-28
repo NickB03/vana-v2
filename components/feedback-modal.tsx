@@ -82,6 +82,7 @@ export function FeedbackModal({ open, onOpenChange }: FeedbackModalProps) {
                 'h-12 w-12',
                 sentiment === 'positive' && 'bg-green-500 hover:bg-green-600'
               )}
+              aria-label="Positive"
             >
               <Smile className="h-6 w-6" />
             </Button>
@@ -94,6 +95,7 @@ export function FeedbackModal({ open, onOpenChange }: FeedbackModalProps) {
                 'h-12 w-12',
                 sentiment === 'neutral' && 'bg-yellow-500 hover:bg-yellow-600'
               )}
+              aria-label="Neutral"
             >
               <Meh className="h-6 w-6" />
             </Button>
@@ -106,6 +108,7 @@ export function FeedbackModal({ open, onOpenChange }: FeedbackModalProps) {
                 'h-12 w-12',
                 sentiment === 'negative' && 'bg-red-500 hover:bg-red-600'
               )}
+              aria-label="Negative"
             >
               <Frown className="h-6 w-6" />
             </Button>
@@ -116,6 +119,7 @@ export function FeedbackModal({ open, onOpenChange }: FeedbackModalProps) {
             value={message}
             onChange={e => setMessage(e.target.value)}
             className="min-h-[150px] resize-none"
+            aria-label="Feedback message"
           />
 
           <div className="flex justify-end gap-2">

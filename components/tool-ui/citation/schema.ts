@@ -27,7 +27,7 @@ export const SerializableCitationSchema = z.object({
   role: ToolUIRoleSchema.optional(),
   receipt: ToolUIReceiptSchema.optional(),
   href: z.string().url(),
-  title: z.string(),
+  title: z.string().min(1),
   snippet: z.string().optional(),
   domain: z.string().optional(),
   favicon: z.string().url().optional(),

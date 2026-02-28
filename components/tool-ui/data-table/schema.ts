@@ -156,7 +156,7 @@ export const SerializableDataTableSchema = z.object({
   id: ToolUIIdSchema,
   role: ToolUIRoleSchema.optional(),
   receipt: ToolUIReceiptSchema.optional(),
-  columns: z.array(serializableColumnSchema),
+  columns: z.array(serializableColumnSchema).min(1),
   data: z.array(serializableDataSchema),
   rowIdKey: z.string().optional(),
   defaultSort: z

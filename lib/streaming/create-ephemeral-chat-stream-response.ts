@@ -137,7 +137,7 @@ export async function createEphemeralChatStreamResponse(
         }
       }
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       return error instanceof Error ? error.message : String(error)
     }
   })
