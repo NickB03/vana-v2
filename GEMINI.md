@@ -19,8 +19,8 @@ Vana v2 is an AI-powered answer engine with a generative UI. It provides a sophi
 ## Architectural Patterns
 
 - **Agents:** Located in `lib/agents/`. The `researcher.ts` uses `ToolLoopAgent` to orchestrate multi-step tool calls. It supports "Quick" and "Adaptive" modes.
-- **Tools:** Located in `lib/tools/`. Core tools include `search`, `fetch`, `askQuestion`, and `todo`.
-- **Database Schema:** Defined in `drizzle/schema.ts`.
+- **Tools:** Located in `lib/tools/`. Core tools include `search`, `fetch`, `askQuestion`, and `todoWrite`.
+- **Database Schema:** Defined in `lib/db/schema.ts`.
   - `chats`: Stores chat metadata.
   - `messages`: Stores individual messages in a chat.
   - `parts`: Stores message parts (text, reasoning, tool calls, tool results, files, sources). This supports complex streaming and state management.
@@ -39,7 +39,7 @@ Vana v2 is an AI-powered answer engine with a generative UI. It provides a sophi
 ## Development Conventions
 
 - **Tool Creation:** New tools should be added to `lib/tools/` and integrated into `lib/agents/researcher.ts`.
-- **Database Changes:** Modify `drizzle/schema.ts` and run appropriate migration scripts (managed via Drizzle Kit).
+- **Database Changes:** Modify `lib/db/schema.ts` and run appropriate migration scripts (managed via Drizzle Kit).
 - **Environment Variables:** Managed in `.env.local`. See `.env.local.example` for required keys.
 - **Linting/Formatting:** ESLint and Prettier are used. Run `bun lint` or `bun format`.
 - **Type Safety:** Strict TypeScript usage is encouraged. Run `bun typecheck`.
@@ -49,6 +49,6 @@ Vana v2 is an AI-powered answer engine with a generative UI. It provides a sophi
 - `app/api/chat/route.ts`: Main entry point for AI chat interactions.
 - `lib/agents/researcher.ts`: Core research logic using `ToolLoopAgent`.
 - `lib/tools/search.ts`: Integration with Tavily and Brave.
-- `drizzle/schema.ts`: Database schema definition.
-- `next.config.mjs`: Next.js configuration (port 43100 by default).
+- `lib/db/schema.ts`: Database schema definition.
+- `next.config.mjs`: Next.js configuration (image remote patterns).
 - `docs/DECISIONS.md`: Records architectural decisions for Phase 0.
