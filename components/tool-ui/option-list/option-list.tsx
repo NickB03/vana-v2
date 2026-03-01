@@ -609,20 +609,22 @@ export function OptionList({
             })}
           </div>
 
-          <div className="@container/actions">
-            <ActionButtons
-              actions={actionsWithDisabledState}
-              align={normalizedFooterActions.align}
-              confirmTimeout={normalizedFooterActions.confirmTimeout}
-              onAction={handleFooterAction}
-              onBeforeAction={
-                onBeforeAction
-                  ? actionId =>
-                      onBeforeAction(actionId, toSelectionState(selectedIds))
-                  : undefined
-              }
-            />
-          </div>
+          {onAction && (
+            <div className="@container/actions">
+              <ActionButtons
+                actions={actionsWithDisabledState}
+                align={normalizedFooterActions.align}
+                confirmTimeout={normalizedFooterActions.confirmTimeout}
+                onAction={handleFooterAction}
+                onBeforeAction={
+                  onBeforeAction
+                    ? actionId =>
+                        onBeforeAction(actionId, toSelectionState(selectedIds))
+                    : undefined
+                }
+              />
+            </div>
+          )}
         </div>
       )}
     </div>
