@@ -180,10 +180,7 @@ export function RenderMessage({
           const parsed = safeParseSerializableOptionList(toolPart.input)
           if (parsed) {
             elements.push(
-              <div
-                key={`${messageId}-display-tool-${index}`}
-                className="my-2"
-              >
+              <div key={`${messageId}-display-tool-${index}`} className="my-2">
                 <OptionList
                   {...parsed}
                   choice={toolPart.output as OptionListSelection}
@@ -196,10 +193,7 @@ export function RenderMessage({
           const parsed = safeParseSerializableOptionList(toolPart.input)
           if (parsed) {
             elements.push(
-              <div
-                key={`${messageId}-display-tool-${index}`}
-                className="my-2"
-              >
+              <div key={`${messageId}-display-tool-${index}`} className="my-2">
                 <OptionList
                   {...parsed}
                   onAction={(actionId, selection) => {
