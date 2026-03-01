@@ -41,7 +41,7 @@ Required when `ENABLE_AUTH=true`:
 ## Search provider options
 
 - `BRAVE_SEARCH_API_KEY` (multimedia/general search)
-- `SEARCH_API` (`tavily`, `exa`, `firecrawl`)
+- `SEARCH_API` (`tavily`, `exa`, `searxng`, `firecrawl`, `brave`)
 - `EXA_API_KEY` / `FIRECRAWL_API_KEY` (if selected)
 
 ## AI provider options (Direct)
@@ -49,6 +49,7 @@ Required when `ENABLE_AUTH=true`:
 - `OPENAI_API_KEY`
 - `ANTHROPIC_API_KEY`
 - `GOOGLE_GENERATIVE_AI_API_KEY`
+- `OPENAI_COMPATIBLE_API_KEY` + `OPENAI_COMPATIBLE_API_BASE_URL` (any OpenAI-compatible API)
 - `OLLAMA_BASE_URL`
 
 ## Optional platform features

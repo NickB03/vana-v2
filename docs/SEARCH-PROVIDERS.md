@@ -262,7 +262,7 @@ The researcher agent operates in two modes that affect how search works:
 | Available tools | `search`, `fetch`, display tools | `search`, `fetch`, `todoWrite`\*, display tools |
 | Multimedia      | Not available (always optimized) | Available if Brave is configured                |
 
-\* `todoWrite` is only available with the quality model type.
+\* `todoWrite` is available when a stream writer is present (i.e., during streaming responses).
 
 In **Quick Mode**, the search tool is wrapped by `wrapSearchToolForQuickMode` (in `lib/agents/researcher.ts`) to force `type: "optimized"` on every call, ensuring fast content-rich results regardless of what the agent requests.
 
