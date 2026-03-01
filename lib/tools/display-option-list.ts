@@ -35,6 +35,6 @@ const DisplayOptionListSchema = z.object({
 export const displayOptionListTool = tool({
   description:
     'Display an interactive option list for the user to select from. Use when presenting choices that require user input, such as preferences, configuration options, or decision points.',
-  inputSchema: DisplayOptionListSchema,
-  execute: async params => params
+  inputSchema: DisplayOptionListSchema
+  // No execute — frontend resolves via addToolResult
 })

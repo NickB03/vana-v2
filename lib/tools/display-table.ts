@@ -7,7 +7,8 @@ const FormatSchema = z.discriminatedUnion('kind', [
     kind: z.literal('number'),
     decimals: z.number().optional(),
     unit: z.string().optional(),
-    compact: z.boolean().optional()
+    compact: z.boolean().optional(),
+    showSign: z.boolean().optional()
   }),
   z.object({
     kind: z.literal('currency'),
@@ -17,7 +18,8 @@ const FormatSchema = z.discriminatedUnion('kind', [
   z.object({
     kind: z.literal('percent'),
     decimals: z.number().optional(),
-    basis: z.enum(['fraction', 'unit']).optional()
+    basis: z.enum(['fraction', 'unit']).optional(),
+    showSign: z.boolean().optional()
   }),
   z.object({
     kind: z.literal('date'),
@@ -26,7 +28,8 @@ const FormatSchema = z.discriminatedUnion('kind', [
   z.object({
     kind: z.literal('delta'),
     decimals: z.number().optional(),
-    upIsPositive: z.boolean().optional()
+    upIsPositive: z.boolean().optional(),
+    showSign: z.boolean().optional()
   }),
   z.object({
     kind: z.literal('boolean'),
@@ -45,6 +48,25 @@ const FormatSchema = z.discriminatedUnion('kind', [
         z.enum(['success', 'warning', 'danger', 'info', 'neutral'])
       )
       .optional()
+  }),
+  z.object({
+    kind: z.literal('status'),
+    statusMap: z
+      .record(
+        z.string(),
+        z.object({
+          tone: z.enum(['success', 'warning', 'danger', 'info', 'neutral']),
+          label: z.string().optional()
+        })
+      )
+      .describe('Map values to status tones and optional labels')
+  }),
+  z.object({
+    kind: z.literal('array'),
+    maxVisible: z
+      .number()
+      .optional()
+      .describe('Max items to show before truncating')
   })
 ])
 
@@ -70,6 +92,12 @@ const DisplayTableSchema = z.object({
       )
     )
     .describe('Row data as array of objects'),
+  rowIdKey: z
+    .string()
+    .optional()
+    .describe(
+      'Key in row data to use as unique row identifier for stable rendering (e.g. "id", "name")'
+    ),
   defaultSort: z
     .object({
       by: z.string().optional(),

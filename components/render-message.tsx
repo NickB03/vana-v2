@@ -9,6 +9,9 @@ import type {
 } from '@/lib/types/ai'
 import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 
+import { OptionList } from './tool-ui/option-list/option-list'
+import type { OptionListSelection } from './tool-ui/option-list/schema'
+import { safeParseSerializableOptionList } from './tool-ui/option-list/schema'
 import { tryRenderToolUIByName } from './tool-ui/registry'
 import { AnswerSection } from './answer-section'
 import { DynamicToolDisplay } from './dynamic-tool-display'
@@ -163,28 +166,81 @@ export function RenderMessage({
       // Display tools render inline in the chat, not in Research Process
       flushBuffer(`seg-${index}`)
       const toolName = part.type.substring(5) // Remove 'tool-' prefix
-      const toolPart = part as { state?: string; output?: unknown }
-      if (toolPart.state === 'output-available' && toolPart.output) {
-        const rendered = tryRenderToolUIByName(toolName, toolPart.output)
-        elements.push(
-          <div key={`${messageId}-display-tool-${index}`} className="my-2">
-            {rendered ?? (
-              <div className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
-                {toolName} output could not be rendered
+      const toolPart = part as {
+        state?: string
+        input?: unknown
+        output?: unknown
+        toolCallId?: string
+      }
+
+      if (toolName === 'displayOptionList') {
+        // Frontend tool: interactive rendering with addToolResult
+        if (toolPart.state === 'output-available') {
+          // Receipt mode: show confirmed selection
+          const parsed = safeParseSerializableOptionList(toolPart.input)
+          if (parsed) {
+            elements.push(
+              <div key={`${messageId}-display-tool-${index}`} className="my-2">
+                <OptionList
+                  {...parsed}
+                  choice={toolPart.output as OptionListSelection}
+                />
               </div>
-            )}
-          </div>
-        )
-      } else if (
-        toolPart.state === 'input-streaming' ||
-        toolPart.state === 'input-available'
-      ) {
-        elements.push(
-          <div
-            key={`${messageId}-display-tool-${index}`}
-            className="my-2 h-24 animate-pulse rounded-lg bg-muted"
-          />
-        )
+            )
+          }
+        } else if (toolPart.state === 'input-available') {
+          // Interactive mode: waiting for user selection
+          const parsed = safeParseSerializableOptionList(toolPart.input)
+          if (parsed) {
+            elements.push(
+              <div key={`${messageId}-display-tool-${index}`} className="my-2">
+                <OptionList
+                  {...parsed}
+                  onAction={(actionId, selection) => {
+                    if (toolPart.toolCallId) {
+                      addToolResult?.({
+                        toolCallId: toolPart.toolCallId,
+                        result: selection
+                      })
+                    }
+                  }}
+                />
+              </div>
+            )
+          }
+        } else {
+          // input-streaming: show skeleton
+          elements.push(
+            <div
+              key={`${messageId}-display-tool-${index}`}
+              className="my-2 h-24 animate-pulse rounded-lg bg-muted"
+            />
+          )
+        }
+      } else {
+        // Generic display tools (table, plan, citations, link preview)
+        if (toolPart.state === 'output-available' && toolPart.output) {
+          const rendered = tryRenderToolUIByName(toolName, toolPart.output)
+          elements.push(
+            <div key={`${messageId}-display-tool-${index}`} className="my-2">
+              {rendered ?? (
+                <div className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+                  {toolName} output could not be rendered
+                </div>
+              )}
+            </div>
+          )
+        } else if (
+          toolPart.state === 'input-streaming' ||
+          toolPart.state === 'input-available'
+        ) {
+          elements.push(
+            <div
+              key={`${messageId}-display-tool-${index}`}
+              className="my-2 h-24 animate-pulse rounded-lg bg-muted"
+            />
+          )
+        }
       }
     } else if (
       part.type === 'reasoning' ||
